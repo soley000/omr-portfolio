@@ -113,23 +113,3 @@ Vision_LLM/
 │   └─ annotations.json
 
 ```
----
-
-
-```mermaid
-graph LR
-A[JSON annotations + frames vidéo] --> B[LLMExtractor]
-B --> C[RAMBackend]
-C --> D[AutoNormalizer]
-D --> E[HallucinationChecker]
-E --> F[CSV résumé + métriques]
-````
-
----
-
-
----
-
-Si tu veux, je peux **faire exactement la même chose pour les 3 autres projets** (`Benchmarking Cosmos`, `RTE`, `Excel Renault`) en mode **no-code / portfolio**, prêt à coller sur GitHub avec README + mini datasets simulés + pipeline Mermaid.
-
-Veux‑tu que je fasse ça maintenant ?
