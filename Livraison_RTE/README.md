@@ -15,3 +15,23 @@ A[Requête métier] --> B[Extraction SQL]
 B --> C[Transformation / nettoyage]
 C --> D[Validation des données]
 D --> E[Livraison dataset final]
+```
+🛠 Méthodologie
+
+Analyse des besoins métier
+
+Création de scripts SQL pour extraction et transformation
+
+Vérification des données (contrôles qualité)
+
+Livraison des datasets prêts à l’usage
+
+📊 Dataset
+
+Mini dataset simulé : 5 lignes
+
+Colonnes : timestamp, voltage, current, power
+
+🏆 Résultats / Livrables
+
+Dataset fiable livré aux équipes métier
