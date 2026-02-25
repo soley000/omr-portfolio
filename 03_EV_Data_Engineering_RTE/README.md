@@ -72,7 +72,7 @@ D --> E[Indicators Computation & CSV 📊]
 
 ---
 
-### 🏆 Résultats / Livrables
+## 🏆 Résultats / Livrables
 
 * CSV **anonymisés** et sécurisés pour les partenaires.
 * Sessions de charge complètes reconstruites et vérifiées.
@@ -85,14 +85,14 @@ D --> E[Indicators Computation & CSV 📊]
 
 ---
 
-### ⚠️ Limites & Perspectives
+## ⚠️ Limites & Perspectives
 
 * Toutes les données demandées ont été livrées conformes et anonymisées.
 * Les partenaires peuvent utiliser ces CSV pour leurs prévisions et analyses.
 * Pas de limitations techniques identifiées à ce stade — toute demande complémentaire sera traitée si nécessaire.
 ---
 
-### 🔒 Confidentialité
+## 🔒 Confidentialité
 
 * **Aucun ID client ou véhicule exposé**.
 * Seules les informations strictement nécessaires pour les indicateurs sont partagées.
@@ -100,7 +100,7 @@ D --> E[Indicators Computation & CSV 📊]
 
 ---
 
-### 📌 Ce que j’ai appris
+## 📌 Ce que j’ai appris
 
 * Data engineering à grande échelle avec **contrainte de confidentialité stricte**.
 * Transformation des demandes métier en indicateurs précis et exploitables.
