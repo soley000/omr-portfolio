@@ -1,10 +1,11 @@
-# Vision + LLM (Évaluation des hallucinations)
+# 👁️ Vision & LLM Evaluation Framework for Driving Scenarios
 
 ## 📌 Contexte
 Projet IA appliquée sur un modèle interne de **coaching de conduite** développé au sein de l'équipe Innovation de Ampere (Renault).
-Le coaching analyse des vidéos de scènes de conduite et génère des descriptions et des conseils (ex : “ralentir car un piéton traverse”) et peut **halluciner des objets** (mentionner des objets qui n’existent pas).
+Le coaching analyse des vidéos de scènes de conduite et génère des descriptions et des conseils (ex : “ralentir car un piéton traverse”).
+Problème : le modèle peut **halluciner des objets** (mentionner des objets qui n’existent pas).
 
-Mon rôle : construire une **pipeline d’évaluation automatisée** pour détecter ces hallucinations et mesurer la fiabilité du coaching.
+Mon rôle : construire une **pipeline d’évaluation automatisée** pour évaluer automatiquement les sorties du coaching et détecter les hallucinations.
 
 ---
 
@@ -17,12 +18,13 @@ Mon rôle : construire une **pipeline d’évaluation automatisée** pour détec
 
 ## ⚙️ Pipeline / Architecture
 ```mermaid
-graph LR
-A[JSON annotations + frames vidéo] --> B[LLMExtractor]
-B --> C[RAMBackend]
-C --> D[AutoNormalizer]
-D --> E[HallucinationChecker]
-E --> F[CSV résumé + métriques]
+flowchart LR
+A[JSON coaching output] --> B[LLMExtractor]
+B --> C[AutoNormalizer]
+D[Frames vidéo] --> E[RAMBackend]
+C --> F[HallucinationChecker]
+E --> F
+F --> G[CSV & Matrices de confusion 📊]
 ````
 
 ### 🔹 Description des composants
@@ -37,14 +39,15 @@ E --> F[CSV résumé + métriques]
 
 ## 🛠 Méthodologie
 
-* Création d’un mini dataset simulé (frames + JSON) pour illustrer le pipeline.
+* Extraction objets via LLM
+* Détection objets via RAM
 * Normalisation des objets FR/EN pour comparaison.
 * Comparaison entre coaching et détection visuelle RAM.
 * Évaluation automatisée : CSV par vidéo + métriques globales.
 
 ---
 
-## 📊 Mini dataset simulé (ex pas dataset réel)
+## 📊 exemple datasets
 
 **annotations.json** :
 
@@ -61,7 +64,7 @@ E --> F[CSV résumé + métriques]
 }
 ```
 
-**frames/** : 2-3 images fictives par vidéo, ex. `video_001/frame_001.jpg`, `video_002/frame_001.jpg`.
+**frames/** : 2-3 images par vidéo, ex. `video_001/frame_001.jpg`, `video_002/frame_001.jpg`.
 
 ---
 
@@ -70,12 +73,13 @@ E --> F[CSV résumé + métriques]
 * Pipeline fonctionnelle pour détection automatique d’hallucinations.
 * CSV résumé (exemple) :
 
-| video_id  | hallucination_pred | missing_object |
-| --------- | ------------------ | -------------- |
-| video_001 | False              |                |
-| video_002 | True               | crosswalk      |
+| Vidéo | Hallucination prédite | Objets manquants | GT    | Accord |
+| ----- | --------------------- | ---------------- | ----- | ------ |
+| 1_001 | False                 | -                | False | True   |
+| 1_005 | True                  | traffic_light    | True  | True   |
 
-* Métriques simulées :
+
+* Métriques :
 
   * Accuracy : 70%
   * Precision : 15%
@@ -88,10 +92,9 @@ E --> F[CSV résumé + métriques]
 
 ## ⚠️ Limites & Perspectives
 
-* Mini dataset simulé → montre la méthodologie mais pas la vraie performance.
 * Normalisation FR/EN peut être améliorée.
-* Nombre de frames (k=60) → à tester pour optimiser performance.
-* Pipeline intégrable sur serveur/cloud pour industrialisation.
+* Nombre frames par vidéo (k=60) → impact sur metrics
+* Données GT limitées (86/155 vidéos)
 
 ---
 
@@ -102,14 +105,13 @@ E --> F[CSV résumé + métriques]
 * Tester différents paramètres pour maximiser précision et rappel (>80%).
 
 ---
+## Confidentialité
 
-## 📁 Organisation des fichiers
+* Données sensibles : non exposées
+* Code interne : non partagé
+* Résultats et architecture montrés pour démonstration uniquement
 
-```
-Vision_LLM/
-├─ README.md
-├─ mini_dataset/
-│   ├─ frames/
-│   └─ annotations.json
+## Ce que j’ai appris
 
-```
+* Pipeline d’évaluation robuste
+* Méthodologie métrique complète
