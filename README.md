@@ -45,7 +45,7 @@ Reconstruction, nettoyage et agrégation de données stratégiques pour RTE ⚡.
 
 Optimisation et automatisation de process Excel/VBA pour ingestion massive de données 🗃️.
 
-### 5️⃣ World Model Evaluation Framework & Long-tail Scenario Testing (projet signature)
+### 5️⃣ World Model Evaluation Framework & Long-tail Scenario Testing 
 
 Framework d’évaluation générique pour modèles génératifs, génération de scénarios critiques, métriques de robustesse et comparatifs multi-modèles 🧩.
 
