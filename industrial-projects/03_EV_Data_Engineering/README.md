@@ -2,8 +2,11 @@
 
 ## 📌 Contexte
 
-Projet sur **données véhicules électriques (EV)** pour régulation réseau RTE.
-Objectif : transformer des données brutes en **indicateurs exploitables** tout en garantissant **anonymisation et confidentialité**, afin de répondre aux besoins métier pour la performance énergétique.
+Projet de data engineering sur des **données télémétriques de véhicules électriques (EV)** en collaboration avec un partenaire du secteur énergétique.
+Objectif : 
+L’objectif est de transformer des données brutes de recharge et de conduite en **indicateurs analytiques exploitables** pour l’analyse énergétique.
+
+Tout en garantissant **anonymisation et confidentialité**, ces analyses peuvent servir à mieux comprendre les usages, les cycles de recharge et certaines tendances liées à la consommation énergétique
 
 ---
 
@@ -16,14 +19,19 @@ Les questions métiers typiques incluent :
 * Quelles batteries **consomment le plus**, ou perdent rapidement du SOC ?
 * Comment **identifier les sessions complètes** de charge et leurs caractéristiques ?
 
-💡 Mon rôle : **transformer ces questions en métriques précises** (durée, énergie, puissance, SOC) et construire des CSV anonymisés **strictement limités aux chiffres demandés**.
+💡 Mon rôle : **transformer ces questions en métriques exploitables** 
+
+---
 
 💼 Contraintes :
 
-* **Anonymisation totale** : tous les IDs clients ou véhicules sont chiffrés.
-* **Strict minimum** : ne fournir que les chiffres demandés, pas de nombre d’utilisateurs ou d’identifiants individuels.
-* Respect de la confidentialité et des exigences RGPD / internes.
+* **anonymisation complète des données**
 
+* uniquement **données agrégées**
+
+* aucune information permettant d’identifier un utilisateur ou un véhicule
+
+* respect strict des règles de confidentialité et du RGPD
 ---
 
 ## ⚙️ Pipeline / Architecture
@@ -33,7 +41,7 @@ flowchart LR
 A[GCP Buckets & Raw EV Data] --> B[Exploration & Data Quality]
 B --> C[Data Cleaning & Normalization]
 C --> D[SQL Cross-Join & Session Reconstruction]
-D --> E[Indicators Computation & CSV 📊]
+D --> E[Indicators Computation 📊]
 ```
 
 ### 🔹 Étapes détaillées
@@ -53,17 +61,16 @@ D --> E[Indicators Computation & CSV 📊]
    * Croisement des tables de conduite et de charge pour reconstruire des sessions complètes.
    * Définition des métriques métier (ex : long trajet > X km ou Y minutes, batterie consommant > seuil).
 
-4. **Indicators Computation & CSV**
+4. **Indicators Computation **
 
    * Calcul d’indicateurs simples et clairs : énergie consommée, puissance moyenne/max, durée de session, variation SOC.
    * Transformation des demandes métier en chiffres exploitables.
-   * Export CSV **anonymisé**, strictement limité aux données demandées.
+   * Données**anonymisé**, strictement limité aux données demandées.
 
 ---
 
 ### 📊 Exemple de dataset (anonymisé)
 
-**raw_ev.csv**
 
 | timestamp        | vehicle_id_hash | soc_start | soc_end | power |
 | ---------------- | --------------- | --------- | ------- | ----- |
@@ -74,7 +81,7 @@ D --> E[Indicators Computation & CSV 📊]
 
 ## 🏆 Résultats / Livrables
 
-* CSV **anonymisés** et sécurisés pour les partenaires.
+* Données **anonymisés** et sécurisés pour les partenaires.
 * Sessions de charge complètes reconstruites et vérifiées.
 * Indicateurs calculés pour répondre aux questions métier :
 
@@ -88,15 +95,16 @@ D --> E[Indicators Computation & CSV 📊]
 ## ⚠️ Limites & Perspectives
 
 * Toutes les données demandées ont été livrées conformes et anonymisées.
-* Les partenaires peuvent utiliser ces CSV pour leurs prévisions et analyses.
+* Les partenaires peuvent utiliser ces données pour leurs prévisions et analyses.
 * Pas de limitations techniques identifiées à ce stade — toute demande complémentaire sera traitée si nécessaire.
 ---
 
-## 🔒 Confidentialité
+## 🔒 Confidentialité & RGPD
 
 * **Aucun ID client ou véhicule exposé**.
 * Seules les informations strictement nécessaires pour les indicateurs sont partagées.
-* Données réelles Renault **non exposées**.
+* Les données générées contiennent uniquement des indicateurs agrégés pour analyse métier.
+* Respect des exigences du RGPD
 
 ---
 

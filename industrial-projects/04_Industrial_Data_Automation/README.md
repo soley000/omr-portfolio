@@ -2,7 +2,7 @@
 
 ## 📌 Contexte
 
-Projet d’automatisation et de standardisation de panels multi-pays pour Renault.
+Projet d’automatisation et de standardisation de panels multi-pays (fichiers provenant de plusieurs sources).
 _Un panel_ est un fichier Excel interne à l’équipe qui permet d’intégrer et de structurer les données des correspondants pays dans la base de données interne. Il contient notamment :
 
 * Les informations commerciales par pays et par modèle
@@ -10,7 +10,9 @@ _Un panel_ est un fichier Excel interne à l’équipe qui permet d’intégrer 
 * Le type de carburant (souvent à compléter manuellement)
 * Les volumes de ventes
 
-💼 Objectif : fiabiliser et automatiser l’ingestion de ces panels dans SIM, l’outil interne de gestion de données de l’équipe statistique, pour limiter les erreurs manuelles, accélérer les mises à jour et faciliter le suivi multi-pays.
+Ces données sont fournies par différents correspondants et doivent être harmonisées avant leur intégration dans une base de données interne d’analyse statistique.
+
+💼 Objectif : fiabiliser et automatiser l’ingestion de ces panels dans l’outil interne de gestion de données de l’équipe statistique, pour limiter les erreurs manuelles, accélérer les mises à jour et faciliter le suivi multi-pays.
 
 ---
 
@@ -67,20 +69,22 @@ C --> D[Intégration dans SIM & Analyse 📊]
 * Process automatisé réduisant significativement le temps et les erreurs
 * Base SIM mise à jour avec données fiables sur plusieurs années
 * Gains temps et fiabilité pour équipe Statistique.
-* 
+ 
 ---
 
 ## ⚠️ Limites & Perspectives
+Certaines automatisations reposent sur des outils bureautiques.
 
-* Macros dépendantes d’Excel → migration future possible Python.
-* Variabilité des formats pays → robustesse à tester.
+Une évolution possible serait :
+
+* migration vers des pipelines Python
+* automatisation plus avancée du contrôle qualité
 
 ---
 
 ## 🔒 Confidentialité
 
-* Données industrielles Renault non exposées.
-* Exemples synthétiques pour portfolio.
+Le projet respecte les principes de confidentialité industrielle et de protection des données.
 
 ---
 

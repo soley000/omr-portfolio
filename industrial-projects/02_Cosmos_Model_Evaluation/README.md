@@ -2,7 +2,9 @@
 
 ## 📌 Contexte et objectif
 
-Ce projet a pour but d’**évaluer les modèles Cosmos Reason1 et Reason2** de NVIDIA sur des mini-datasets de scénarios urbains, en suivant la **méthodologie standardisée NVIDIA**.
+Ce projet a pour objectif d’évaluer plusieurs **modèles vision-language** appliqués à l’analyse de scènes de conduite.
+
+L’évaluation est réalisée sur un **mini-dataset de scénarios urbains**, avec une méthodologie inspirée de pratiques standards d’évaluation de modèles IA.
 
 ### Objectifs principaux :
 
@@ -107,7 +109,7 @@ done
 | Parsing output          | Utilisateur        | Moyen          | JSON final            |
 | Sauvegarde JSON et logs | Script + post-proc | Moyen          | Organisation fichiers |
 
-💡 Ici, il n’y a pas de pipeline que je construis : je suis strictement la **trame NVIDIA**, c’est un **spike d’exécution et d’évaluation**.
+💡 Ici, il n’y a pas de pipeline que je construis : je suis strictement la **trame NVIDIA**, c’est un **spike d’évaluation**.
 
 ---
 
@@ -115,11 +117,11 @@ done
 
 Axes d’évaluation :
 
-* **Objets** : piétons, cyclistes, véhicules
-* **Spatial** : cohérence spatiale
-* **Temporel** : dynamique de la scène
-* **Risque** : pertinence par rapport au GT
-* **Fidélité** : absence d’hallucinations
+* **détection d'Objets** : piétons, cyclistes, véhicules
+* **cohérence spatiale** : cohérence spatiale
+* **cohérence temporelle** : dynamique de la scène
+* **identification des risques** : pertinence par rapport au GT
+* **Fidélité de description** : absence d’hallucinations
 * **Focus** : attention aux éléments critiques
 
 | Scénario | Temps Inf. | Objets                | Risque              | Notes principales        | Obj. | Spatial | Temporel | Risque | Fidélité | Focus | Alignement GT |
@@ -140,17 +142,9 @@ Axes d’évaluation :
 
 ---
 
-## 🔒 Confidentialité
-
-* Poids et sorties internes **non exposés**.
-* Vidéos synthétiques ou mini-datasets utilisés pour démonstration.
-
----
-
 ## 📌 Ce que j’ai appris
 
 * Setup GPU / HuggingFace auth en environnement entreprise.
-* Suivi strict de la méthodologie NVIDIA.
 * Analyse qualitative et mesure de performance des modèles Cosmos.
 
 ---

@@ -1,16 +1,16 @@
-# 🌟 Portfolio – Rosette-Michèle Otounga
+# 🌟AI & Data Engineering Portfolio – Rosette-Michèle Otounga
 
 Bienvenue sur mon portfolio GitHub ! 👩🏽‍💻
 
-Je suis étudiante en Master Intelligence Artificielle et Data Scientist, apprentie Big Data Engineering et Applied AI / ML chez Ampere Software Technology. Je contribue à des projets industriels complexes liés aux véhicules électriques, à la mobilité et à l’innovation IA appliquée.
+Je suis étudiante en Master Intelligence Artificielle et Data Scientist, apprentie Big Data Engineering et Applied AI / ML chez Ampere Software Technology. Je contribue à des projets industriels liés aux véhicules électriques, à la mobilité et à l’innovation IA appliquée.
 
 ---
 
 ## 💼 Mon rôle
 
-* Nettoyage, structuration et valorisation de données complexes ⚡
-* Conception de pipelines pour l’analyse et l’évaluation de modèles IA
-* Analyse de données pour aide à la décision et performance énergétique
+* Nettoyage, structuration et valorisation de données massives de véhicules électriques ⚡
+* Conception de pipelines pour l’analyse et l’évaluation de modèles IA à l'état de l'art
+* Analyse de données pour aide à la décision et performance des systèmes
 * Évaluation et benchmark de modèles vision / langage pour des scénarios de conduite 🚗
 
 ---
@@ -20,7 +20,7 @@ Je suis étudiante en Master Intelligence Artificielle et Data Scientist, appren
 * **Data Engineering** : SQL, BigQuery, Looker Studio, automatisation de flux
 * **Machine Learning & IA appliquée** : évaluation et benchmark de modèles, pipelines de validation
 * **Computer Vision** : extraction, annotation, création de datasets
-* **Outils & environnements** : Python, VBA, Conda, GPU enterprise, frameworks IA (RAM, YOLO, LLM)
+* **Outils & environnements** : Python, VBA, Conda, GPU enterprise, frameworks IA (modèles à l'état de l'art)
 * **Soft skills** : curieuse, rigoureuse, proactive, orientée résultats 💡
 
 > Ce portfolio présente une sélection de projets industriels et exploratoires, documentés **sans code ni données confidentielles**, mais avec méthodologie, architecture et résultats.
@@ -29,11 +29,13 @@ Je suis étudiante en Master Intelligence Artificielle et Data Scientist, appren
 
 ## 🚀 Projets industriels (principaux)
 
+Les projets industriels présentés ici décrivent **la méthodologie, l’architecture et les résultats**, mais **aucun code interne ni donnée confidentielle n’est exposé**.
+
 ### 1️⃣ Vision & LLM Evaluation Framework for Driving Scenarios
 
-Pipeline d’évaluation de modèles internes vs RAM, détection d’hallucinations et analyse qualitative.
+Pipeline d’évaluation automatisée pour détecter les incohérences et hallucinations dans les descriptions générées par un système d’analyse interne de scènes de conduite.
 
-### 2️⃣ Benchmarking Vision-Language Models (Cosmos Reason1 & Reason2)
+### 2️⃣ Benchmarking Vision Models 
 
 Analyse comparative de modèles LLM appliqués aux scénarios de conduite, métriques et tableau synthèse.
 
@@ -45,15 +47,21 @@ Reconstruction, nettoyage et agrégation de données stratégiques pour RTE ⚡.
 
 Optimisation et automatisation de process Excel/VBA pour ingestion massive de données 🗃️.
 
-### 5️⃣ World Model Evaluation Framework & Long-tail Scenario Testing (projet signature)
-
-Framework d’évaluation générique pour modèles génératifs, génération de scénarios critiques, métriques de robustesse et comparatifs multi-modèles 🧩.
-
 ---
 
 ## 🌱 Side Projects / Explorations
 
-* **Projet Détection d’objets en images** – Détection d’objets avec YOLO et SSD MobileNet v2 (side project étudiant).
+Les side projects sont des explorations personnelles permettant d’approfondir :
+
+- le machine learning
+- la computer vision
+- la construction de pipelines data
+
+Exemple :
+
+**Object Detection with YOLO & SSD**
+
+Projet d’exploration de détection d’objets dans des images avec comparaison de modèles.
 
 ---
 
@@ -67,4 +75,12 @@ Je vise un poste type **Big Data & AI Engineer – Applied ML & Pipelines**, ou 
 
 > Passionnée par la data science, le machine learning et la mobilité durable, je souhaite transformer la donnée en levier concret d’innovation et de performance industrielle.
 
+# 🔒 Confidentialité
 
+Les projets industriels présentés dans ce portfolio :
+
+- ne contiennent **aucune donnée réelle**
+- n’exposent **aucun code interne**
+- utilisent **des exemples synthétiques**
+
+Ils sont présentés uniquement à des fins **pédagogiques et démonstratives**.

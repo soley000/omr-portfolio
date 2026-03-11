@@ -1,50 +1,61 @@
 # 👁️ Vision & LLM Evaluation Framework for Driving Scenarios
 
 ## 📌 Contexte
-Projet IA appliquée sur un modèle interne de **coaching de conduite** développé au sein de l'équipe Innovation de Ampere (Renault).
-Le coaching analyse des vidéos de scènes de conduite et génère des descriptions et des conseils (ex : “ralentir car un piéton traverse”).
-Problème : le modèle peut **halluciner des objets** (mentionner des objets qui n’existent pas).
+Projet IA appliquée sur un modèle interne de **coaching de conduite** un contexte industriel d’innovation.
 
-Mon rôle : construire une **pipeline d’évaluation automatisée** pour évaluer automatiquement les sorties du coaching et détecter les hallucinations.
+Ce système analyse des vidéos de scènes de conduite et génère automatiquement des descriptions et des conseils de conduite (par exemple : « *ralentir car un piéton traverse* »).
 
+Un problème identifié est la possibilité que le modèle **hallucine certains objets**, c’est-à-dire qu’il mentionne des éléments qui ne sont pas réellement présents dans la scène.
+
+Mon rôle a été de **concevoir une pipeline d’évaluation automatisée** permettant d’analyser les sorties du système et de détecter ces hallucinations.
 ---
 
 ## 🧩 Problématique
+
 - Vérifier automatiquement si les objets mentionnés par le coaching existent réellement dans les frames vidéo.
 - Mesurer la fiabilité globale du modèle avec des métriques : précision, rappel, F1-score.
-- Pipeline **robuste, reproductible, scalable**, mais présenté ici en version **no-code / portfolio**.
+Pour cela, la pipeline permet de :
 
+*extraire les objets mentionnés dans les descriptions générées
+
+* détecter les objets réellement présents dans les images
+
+* comparer les deux sources d’information
+
+* calculer des métriques d’évaluation (precision, recall, F1-score)
+
+L’objectif est de disposer d’une pipeline robuste, reproductible et scalable, présentée ici sous forme documentée sans code interne.
 ---
 
 ## ⚙️ Pipeline / Architecture
-```mermaid
-flowchart LR
-A[JSON coaching output] --> B[LLMExtractor]
-B --> C[AutoNormalizer]
-D[Frames vidéo] --> E[RAMBackend]
-C --> F[HallucinationChecker]
-E --> F
-F --> G[CSV & Matrices de confusion 📊]
-````
 
-### 🔹 Description des composants
+### 🔹 Composants principaux
 
 1. **LLMExtractor** : extrait objets mentionnés dans le texte de coaching.
 2. **RAMBackend** : détecte objets réels dans les frames vidéo (ex. Recognize Anything Model).
 3. **AutoNormalizer** : harmonise FR/EN et regroupe synonymes.
 4. **HallucinationChecker** : compare objets coaching vs RAM → détecte hallucinations.
-5. **CSV & Metrics** : génère rapport par vidéo, calcule précision, rappel, F1, matrice de confusion.
+5. **Metrics** : génère rapport par vidéo, calcule précision, rappel, F1, matrice de confusion.
 
 ---
 
 ## 🛠 Méthodologie
 
-* Extraction objets via LLM
-* Détection objets via RAM
-* Normalisation des objets FR/EN pour comparaison.
-* Comparaison entre coaching et détection visuelle RAM.
-* Évaluation automatisée : CSV par vidéo + métriques globales.
+1. Extraction des objets mentionnés dans les descriptions générées
 
+2. Détection d’objets présents dans les frames vidéo
+
+3.Normalisation linguistique pour faciliter la comparaison
+
+4. Comparaison entre description générée et détection visuelle
+
+5. Calcul automatique des métriques d’évaluation
+
+La pipeline produit :
+
+* un rapport CSV par vidéo
+
+* des métriques globales d’évaluation
 ---
 
 ## 📊 exemple datasets
@@ -70,8 +81,15 @@ F --> G[CSV & Matrices de confusion 📊]
 
 ## 🏆 Résultats / Livrables
 
-* Pipeline fonctionnelle pour détection automatique d’hallucinations.
-* CSV résumé (exemple) :
+La pipeline permet :
+
+* la détection automatisée d’hallucinations potentielles
+
+* la génération de rapports d’évaluation
+
+* le calcul de métriques globales
+
+Exemple simplifié de sortie :
 
 | Vidéo | Hallucination prédite | Objets manquants | GT    | Accord |
 | ----- | --------------------- | ---------------- | ----- | ------ |
@@ -105,13 +123,11 @@ F --> G[CSV & Matrices de confusion 📊]
 * Tester différents paramètres pour maximiser précision et rappel (>80%).
 
 ---
-## Confidentialité
-
-* Données sensibles : non exposées
-* Code interne : non partagé
-* Résultats et architecture montrés pour démonstration uniquement
 
 ## Ce que j’ai appris
 
-* Pipeline d’évaluation robuste
-* Méthodologie métrique complète
+* Conception de pipelines d’évaluation de modèles IA
+
+* Définition de métriques d’analyse pertinentes
+
+* Comparaison automatique entre sources de données textuelles et visuelles
