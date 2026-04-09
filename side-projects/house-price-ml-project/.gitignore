@@ -1,0 +1,25 @@
+
+
+# Modèles entraînés (fichiers lourds)
+models/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Environnements virtuels
+.env
+.venv
+env/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

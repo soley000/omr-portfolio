@@ -1,0 +1,22 @@
+# Poids des modèles (trop lourds pour GitHub)
+models/
+*.pt
+*.pth
+
+# Cache Hugging Face
+~/.cache/huggingface/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
