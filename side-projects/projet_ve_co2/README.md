@@ -48,7 +48,7 @@ Le choix du modèle n'a pas été immédiat. Deux modèles ont été évalués e
 
 ### Ce qu'on a observé concrètement
 
-Le SVR a été testé en premier. Avec seulement 14 points d'entraînement, il produit une MAE très basse sur les données connues — signe qu'il les **mémorise** plutôt qu'il ne les apprend. En dehors de cette plage, ses prédictions deviennent **non contrôlées** : valeurs négatives ou supérieures à 100% possibles, ce qui est physiquement impossible pour une part de marché.
+Le SVR a été testé en premier. Avec seulement 14 points d'entraînement, il produit une MAE très basse sur les données connues. En dehors de cette plage, ses prédictions deviennent non contrôlées : valeurs négatives ou supérieures à 100% possibles, ce qui est physiquement impossible pour une part de marché — signe qu'il mémorise plutôt qu'il ne généralise.
 
 Prophet, configuré avec une **croissance logistique** (courbe en S), a produit des prédictions cohérentes avec la dynamique réelle du marché : décollage progressif jusqu'en 2020, puis accélération marquée, avec un plafonnement réaliste vers 2033–2035.
 
@@ -64,7 +64,7 @@ Prophet growth='logistic' modélise exactement cette dynamique.
 SVR sur 14 points = surapprentissage, extrapolation non bornée.
 ```
 
-La comparaison est documentée et visualisée dans le **notebook 02**, section 5.
+La comparaison est documentée et visualisée dans le **[notebook 02](https://github.com/soley000/omr-portfolio/blob/main/side-projects/projet_ve_co2/notebooks/02_modelisation_prediction_co2.ipynb)**, section 5.
 
 ---
 
