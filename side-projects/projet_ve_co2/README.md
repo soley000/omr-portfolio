@@ -75,7 +75,7 @@ La comparaison est documentée et visualisée dans le **notebook 02**, section 5
 - Sa **consommation moyenne** (L/100 km)
 - Le **nombre de kilomètres** parcourus par an
 - L'**année de passage** au véhicule électrique
-- Le **scénario d'adoption nationale** (conservateur / réaliste / ambitieux)
+- Le **scénario d'adoption nationale** — conservateur (×0.7), réaliste (prédiction Prophet), ambitieux (×1.4) — tous bornés à 50% maximum
 
 **L'application calcule et affiche :**
 - Les **émissions annuelles actuelles** en CO₂
