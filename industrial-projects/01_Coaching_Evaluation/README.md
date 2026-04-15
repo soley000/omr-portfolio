@@ -16,13 +16,13 @@ Mon rôle a été de **concevoir une pipeline d’évaluation automatisée** per
 - Mesurer la fiabilité globale du modèle avec des métriques : précision, rappel, F1-score.
 Pour cela, la pipeline permet de :
 
-* extraire les objets mentionnés dans les descriptions générées
+  * extraire les objets mentionnés dans les descriptions générées
 
-* détecter les objets réellement présents dans les images
+  * détecter les objets réellement présents dans les images
 
-* comparer les deux sources d’information
+  * comparer les deux sources d’information
 
-* calculer des métriques d’évaluation (precision, recall, F1-score)
+  * calculer des métriques d’évaluation (precision, recall, F1-score)
 
 L’objectif est de disposer d’une pipeline robuste, reproductible et scalable, présentée ici sous forme documentée sans code interne.
 ---
