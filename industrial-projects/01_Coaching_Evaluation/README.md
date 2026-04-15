@@ -16,7 +16,7 @@ Mon rôle a été de **concevoir une pipeline d’évaluation automatisée** per
 - Mesurer la fiabilité globale du modèle avec des métriques : précision, rappel, F1-score.
 Pour cela, la pipeline permet de :
 
-*extraire les objets mentionnés dans les descriptions générées
+* extraire les objets mentionnés dans les descriptions générées
 
 * détecter les objets réellement présents dans les images
 
