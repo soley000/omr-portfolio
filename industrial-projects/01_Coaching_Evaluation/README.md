@@ -45,7 +45,7 @@ L’objectif est de disposer d’une pipeline robuste, reproductible et scalable
 
 2. Détection d’objets présents dans les frames vidéo
 
-3.Normalisation linguistique pour faciliter la comparaison
+3. Normalisation linguistique pour faciliter la comparaison
 
 4. Comparaison entre description générée et détection visuelle
 
