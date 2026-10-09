@@ -1,0 +1,22 @@
+# Kaggle datasets
+data/*.csv
+
+# Trained models
+models/*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db

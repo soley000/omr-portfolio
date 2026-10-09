@@ -1,0 +1,25 @@
+# Détection d'objets – YOLOv8 · DETR · OWL-ViT
+
+# Interface
+streamlit>=1.32.0
+
+# Vision & images
+opencv-python-headless>=4.9.0
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# YOLOv8
+ultralytics>=8.1.0
+
+# DETR + OWL-ViT via Hugging Face
+transformers>=4.38.0
+torch>=2.1.0
+torchvision>=0.16.0
+timm>=0.9.0
+
+# Jupyter
+jupyter
+ipywidgets
+
+# Tableau
+pandas>=2.0.0

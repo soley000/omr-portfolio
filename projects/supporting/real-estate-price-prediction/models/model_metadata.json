@@ -1,0 +1,6 @@
+{
+  "model_name": "Gradient Boosting",
+  "model_path": "gradient_boosting_model.pkl",
+  "r2": 0.875,
+  "mae": 13995.0
+}

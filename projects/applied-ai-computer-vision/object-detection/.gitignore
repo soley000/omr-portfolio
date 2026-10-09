@@ -1,0 +1,23 @@
+# Model weights
+models/
+*.pt
+*.pth
+
+# Hugging Face cache
+.cache/
+huggingface/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
