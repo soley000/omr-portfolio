@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_station_status
+    description: Relevés de stations (un par station et par minute), nettoyés techniquement en couche 2.
+    columns:
+      - name: station_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_station_information')
+                field: station_id
+              config:
+                severity: warn   # une station absente du référentiel est à surveiller, pas bloquante
+      - name: snapshot_ts
+        tests: [not_null]
+      - name: date_paris
+        tests: [not_null]
+      - name: is_in_service
+        tests: [not_null]
+
+  - name: stg_station_information
+    description: Référentiel des stations, dernière version connue de chacune.
+    columns:
+      - name: station_id
+        tests: [not_null, unique]
+      - name: lat
+        tests: [not_null]
+      - name: lon
+        tests: [not_null]

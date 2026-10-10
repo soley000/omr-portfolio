@@ -1,0 +1,6 @@
+# Dépendances pour les tests automatiques (GitHub Actions). Pas de Streamlit : il n'est pas testé ici.
+pandas
+pyarrow
+duckdb
+dbt-duckdb
+pytest

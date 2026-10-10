@@ -1,0 +1,22 @@
+name: mobilityflow
+version: "0.1.0"
+config-version: 2
+profile: mobilityflow
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+vars:
+  # Seuil EXPLORATOIRE pour dire qu'une station "paraît figée". À recalibrer après ~1 semaine
+  # d'historique (une station calme la nuit n'est pas forcément en panne).
+  frozen_threshold_hours: 6
+  # Un trou de plus de N minutes entre deux relevés coupe une période "sans changement".
+  max_gap_minutes: 5
+
+models:
+  mobilityflow:
+    staging:
+      +materialized: table   # tables autonomes : le fichier .duckdb ne dépend pas du chemin des Parquet
+    marts:
+      +materialized: table   # vraies tables stockées dans mobilityflow.duckdb

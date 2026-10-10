@@ -1,0 +1,44 @@
+# ---- Data: never in Git (raw feeds, Parquet, warehouse live outside the repo) ----
+data/
+gbfs/
+parquet/
+warehouse/
+*.duckdb
+*.duckdb.tmp
+*.duckdb.wal
+*.parquet
+*.csv
+
+# ---- Python environments and caches ----
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ---- dbt ----
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
+
+# ---- Airflow (local runtime files) ----
+logs/
+airflow.db
+*.pid
+
+# ---- Secrets and local config ----
+.env
+.env.*
+.streamlit/secrets.toml
+
+# ---- Documents that must not be published by accident ----
+*.pdf
+*.pptx
+
+# ---- Editors and OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

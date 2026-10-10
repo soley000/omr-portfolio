@@ -1,175 +1,136 @@
 <a id="top"></a>
 
-# Object Detection: YOLOv8, DETR & OWL-ViT
+# EV Charging Data Engineering for Grid Regulation
 
-> Computer vision model comparison and interactive inference.
+> Transforming raw electric vehicle charging and driving data into structured, anonymized indicators for energy analysis.
 
-**[Overview](#overview)** · **[Models](#models)** · **[Results](#results)** · **[Application](#application)** · **[Installation](#installation)** · **[Limitations](#limitations)**
+**[Overview](#overview)** · **[Constraints](#constraints)** · **[Pipeline](#pipeline)** · **[Sessions](#session-reconstruction)** · **[Indicators](#indicators)** · **[Limitations](#limitations)**
 
 | | |
 |---|---|
-| **Problem** | How do different detection paradigms trade off speed, coverage and flexibility on the same scene? |
-| **Approach** | Compared a one-stage CNN, a Transformer detector and an open-vocabulary detector, and built a Streamlit app to run them alone or side by side. |
-| **Key result** | YOLOv8n: 139 ms, 3 objects · DETR: 1592 ms, 9 objects (~11× slower) · OWL-ViT: detects any object described in text. |
-| **Stack** | Python · PyTorch · Ultralytics · Hugging Face Transformers · OpenCV · Streamlit |
-| **Context** | Open source |
+| **Problem** | Raw EV telemetry cannot directly answer an energy partner's questions about charging behavior and its grid implications. |
+| **Approach** | Assessed data quality, cleaned and normalized the data, cross-joined driving and charging tables in SQL to reconstruct sessions, translated business questions into indicators. |
+| **Key result** | Complete, verified charging sessions and anonymized indicators delivered to an energy-sector partner. |
+| **Stack** | Google Cloud Platform · SQL |
+| **Context** | Industrial project with an energy-sector partner. Code and data are confidential. |
 
 ## Overview
 
-This project compares three object detection approaches based on different computer vision paradigms:
+Electric vehicle charging data can help characterize charging behavior, energy consumption and potential implications for electricity-grid management.
 
-* **YOLOv8n**: one-stage CNN-based detection;
-* **DETR ResNet-50**: Transformer-based detection;
-* **OWL-ViT**: open-vocabulary vision-language detection.
-
-The project started with two classic detectors (YOLOv8 and SSD MobileNet), then evolved to explore what recent research brings: Transformer architectures for vision, and detection guided by natural language.
-
-The goal is not to find a single "best" model, but to understand how different architectures behave on the same input, and how their trade-offs affect detection coverage, confidence, inference time and flexibility.
+This industrial project transformed raw EV telemetry into structured, anonymized analytical indicators in collaboration with an energy-sector partner. The core of the work was to **translate the partner's business questions into measurable indicators**: exploring raw tables, assessing data quality, standardizing fields, combining driving and charging information, reconstructing charging sessions and computing the requested metrics.
 
 ## Objectives
 
-* Compare three detection paradigms using pretrained models.
-* Understand the differences between CNN-based, Transformer-based and open-vocabulary detection.
-* Evaluate practical trade-offs between coverage, confidence and inference time.
-* Provide an interactive interface for visual inspection and model comparison.
+* Explore raw charging and driving data and assess its quality.
+* Clean anomalies and normalize formats and units.
+* Combine data sources to reconstruct complete charging sessions.
+* Compute energy and charging indicators.
+* Identify long trips, high-consumption batteries and charging-session characteristics.
+* Deliver anonymized analytical data for further energy analysis.
 
-## Models
+## Constraints
 
-| Model          | Paradigm        | Vocabulary                | Framework    | Main characteristic        |
-| -------------- | --------------- | ------------------------- | ------------ | -------------------------- |
-| YOLOv8n        | One-stage CNN   | Fixed (80 COCO classes)   | Ultralytics  | Fast, lightweight          |
-| DETR ResNet-50 | Transformer     | Fixed (80 COCO classes)   | Hugging Face | No NMS, broader coverage   |
-| OWL-ViT        | Vision-language | Open (free text)          | Hugging Face | Text-guided detection      |
+* Full anonymization of the data.
+* Aggregated data only.
+* No information allowing a user or a vehicle to be identified.
+* Strict compliance with confidentiality rules and the GDPR.
 
-**YOLOv8n** predicts all boxes and labels in a single pass. It is the industry standard for real-time detection and serves here as the fast baseline.
+## Data
 
-**DETR** was the first model to apply the Transformer architecture to object detection, treating it as a set-prediction problem. It removes Non-Maximum Suppression (NMS): bounding boxes emerge directly from attention over image features.
+Raw EV telemetry stored in Google Cloud Platform (GCP) buckets, covering charging and driving information: timestamps, anonymized vehicle identifiers, initial and final state of charge (SOC), charging power.
 
-**OWL-ViT** detects objects described by natural-language prompts, without being limited to the 80 COCO classes. It aligns visual and text representations in a shared space, close to CLIP, which lets it generalize without retraining:
+Illustrative example (not actual partner data):
 
-```text
-book
-plant
-vase
-person wearing a helmet
+| Timestamp        | Vehicle ID (anonymized) | SOC start (%) | SOC end (%) | Power (kW) |
+| ---------------- | ----------------------- | ------------: | ----------: | ---------: |
+| 2025-06-01 08:00 | VE_001_hash             |            20 |          80 |         22 |
+| 2025-06-01 09:00 | VE_002_hash             |            50 |          90 |         11 |
+
+## Pipeline
+
+```mermaid
+flowchart TD
+    A["GCP buckets<br/>raw EV telemetry"] --> B["Exploration &<br/>data quality assessment"]
+    B --> C["Cleaning & normalization<br/>formats · units · anomalies"]
+    C --> D["SQL integration<br/>driving + charging data"]
+    D --> E["Charging-session<br/>reconstruction"]
+    E --> F["Indicator computation"]
+    F --> G["Anonymization &<br/>output control"]
+    G --> H["Anonymized analytical outputs"]
 ```
-
-Together, the three models cover five years of evolution in object detection: from the optimized CNN, to the Transformer, to language-guided detection.
-
-## Results
-
-The models were tested on the same indoor scene containing a table, plants, books, vases and a person.
-
-![Speed vs. coverage trade-offs](../../../assets/images/object_detection_tradeoffs.png)
-
-| Model          | Objects detected | Unique classes | Average confidence | Inference time |
-| -------------- | ---------------: | -------------: | -----------------: | -------------: |
-| YOLOv8n        |                3 |              3 |              0.712 |         139 ms |
-| DETR ResNet-50 |                9 |              6 |              0.896 |        1592 ms |
-| OWL-ViT        | prompt-dependent | prompt-dependent |             ~0.6 |         989 ms |
-
-| YOLOv8n | DETR ResNet-50 |
-|:---:|:---:|
-| ![YOLOv8n detections](../../../assets/images/object_detection_yolo.jpg) | ![DETR detections](../../../assets/images/object_detection_detr.jpg) |
-
-| OWL-ViT | Side-by-side comparison |
-|:---:|:---:|
-| ![OWL-ViT detections](../../../assets/images/object_detection_owlvit.jpg) | ![Comparison of the three models](../../../assets/images/object_detection_comparaison.jpg) |
-
-### Observations
-
-**YOLOv8n** was the fastest model (~139 ms). It detected the most obvious objects (person, dining table, cup) but missed several less prominent ones.
-
-**DETR** was the most exhaustive: 9 objects and 6 classes, including books, a potted plant and a vase that YOLOv8n missed, at roughly **11× the inference time**. This is the typical speed/coverage trade-off between CNN and Transformer detectors.
-
-**OWL-ViT** only searches for what it is asked to find. Its scores are naturally lower (recommended threshold: 0.1), but it is the only one of the three able to detect arbitrary objects without retraining.
-
-Average confidence scores are not directly comparable across models, since each model calibrates its scores differently.
-
-## Application
-
-| Single-model mode | Comparison mode |
-|:---:|:---:|
-| ![Single-model mode](../../../assets/images/object_detection_app_single.png) | ![Comparison mode](../../../assets/images/object_detection_app_compare.png) |
-
-**Single-model mode**: upload a JPG/PNG image, select a model, set the confidence threshold (and text prompts for OWL-ViT), then visualize the annotated image and metrics.
-
-**Comparison mode**: run several models on the same image and display the results side by side.
-
-Reported metrics: number of detected objects, unique classes, average and maximum confidence, inference time. Annotated images can be downloaded.
-
-## Installation
-
-```bash
-pip install -r requirements.txt
-streamlit run app/app.py
-```
-
-The application runs at `http://localhost:8501`. On Windows, `run_app.bat` also starts it. The first run downloads the model weights.
 
 <details>
-<summary><b>Project structure</b></summary>
+<summary><b>Pipeline steps in detail</b></summary>
 
-```text
-object-detection/
-├── app/
-│   └── app.py
-├── data/
-│   └── image_test.jpg
-├── models/                 # weights downloaded locally, ignored by Git
-├── notebooks/
-│   └── object_detection_comparaison.ipynb
-├── results/
-│   ├── resultat_yolov8.jpg
-│   ├── resultat_detr.jpg
-│   ├── resultat_owlvit.jpg
-│   └── comparaison.jpg
-├── .gitignore
-├── requirements.txt
-├── run_app.bat
-└── README.md
-```
+1. **Raw data exploration**: inspect source tables to identify which columns and values can be used.
+2. **Data quality assessment**: check consistency, missing values and duplicates.
+3. **Cleaning and normalization**: correct anomalies and harmonize formats and units.
+4. **Cross-table integration**: combine driving and charging records with SQL.
+5. **Session reconstruction**: identify and rebuild complete charging sessions.
+6. **Indicator computation**: translate business requests into clear figures.
+7. **Anonymization and output control**: deliver only the data requested, with no identifiable user or vehicle information.
 
 </details>
 
-<details>
-<summary><b>Notebook</b></summary>
+## Session Reconstruction
 
-`notebooks/object_detection_comparaison.ipynb` contains the experimental comparison of the three models on the test image: inference, detection visualization, metric comparison and observations.
+A charging session is reconstructed by combining related telemetry records into a single event with a start, an end and associated measurements (SOC variation, duration, power).
 
-</details>
+![Charging-session reconstruction concept](../../../assets/images/ev_session_reconstruction_concept.png)
+
+*Conceptual illustration with synthetic data. It shows the principle, not partner data or the exact production rules.*
+
+## Indicators
+
+| Business question | Indicator |
+| ----------------- | --------- |
+| On which days or periods do long or short trips occur? | Trip counts by day and period |
+| Which vehicle types make the most energy-intensive trips? | Energy consumed by vehicle category |
+| Which batteries consume the most, or lose SOC quickly? | SOC variation, high-consumption flags |
+| How many charging sessions can be reconstructed completely? | Count of complete, verified sessions |
+| What are the characteristics of charging sessions? | Duration, average and maximum power (kW) |
+
+Business metrics are defined with explicit thresholds agreed with the partner, for example a long trip as more than *X* km or *Y* minutes, or a high-consumption battery as one exceeding a consumption threshold.
+
+## Outputs
+
+* Cleaned and standardized analytical data.
+* Reconstructed and verified charging sessions.
+* Anonymized, aggregated charging and driving indicators.
+* Summaries of session duration, power and SOC variation.
+* Analysis of long trips, long charging sessions and high-consumption cases, supporting the partner's forecasting and strategic analysis.
 
 ## Technologies
 
-| Category         | Technologies                           |
-| ---------------- | -------------------------------------- |
-| Language         | Python 3.10+                           |
-| Application      | Streamlit                              |
-| Image processing | OpenCV, Pillow                         |
-| Object detection | YOLOv8, DETR, OWL-ViT                  |
-| Deep learning    | PyTorch                                |
-| Model ecosystem  | Ultralytics, Hugging Face Transformers |
+| Category          | Technologies                                |
+| ----------------- | ------------------------------------------- |
+| Cloud             | Google Cloud Platform (storage buckets)     |
+| Data integration  | SQL (cross-table joins)                     |
+| Data preparation  | Cleaning, normalization, quality assessment |
+| Privacy           | Anonymization, aggregation, GDPR compliance |
 
 ## Key Takeaways
 
-* Detection performance is not defined by a single metric.
-* **YOLOv8n**: fastest inference.
-* **DETR**: broader coverage on the tested scene, at a much higher inference cost.
-* **OWL-ViT**: flexible prompt-based detection, requiring a different evaluation setup.
-* Model selection depends on the use case and its constraints rather than on architecture alone.
+* Working with industrial telemetry from multiple related sources.
+* Translating business questions into data transformations and measurable indicators.
+* Using SQL to integrate data and reconstruct complete charging sessions.
+* Assessing data quality before producing analytical outputs.
+* Designing outputs under strict confidentiality and privacy constraints.
 
 ## Limitations
 
-* Single test image, without labelled ground truth or standardized metrics such as mAP: an exploratory comparison, not a benchmark.
-* Inference times depend on the execution environment.
-* OWL-ViT's prompt-based paradigm makes direct numerical comparison with fixed-vocabulary detectors imperfect.
+* Scope is defined by the available data and the indicators requested by the partner.
+* Session-reconstruction quality depends on source-data completeness and consistency.
+* Some indicators depend on business thresholds and definitions.
+* Confidentiality prevents publishing raw data and detailed implementation.
 
 ## Future Improvements
 
-* Evaluate on a larger labelled dataset with mAP, precision and recall.
-* Measure performance across hardware configurations, including memory use and model size.
-* Add more recent open-vocabulary and vision-language detectors.
-* Add experiment tracking and result storage to the application.
+* Automate recurring data quality checks.
+* Strengthen validation of reconstructed charging sessions.
+* Document indicator definitions and thresholds more comprehensively.
+* Extend the indicator set based on additional business requirements.
 
 ## Author
 

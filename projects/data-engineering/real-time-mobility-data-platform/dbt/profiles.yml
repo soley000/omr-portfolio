@@ -1,0 +1,11 @@
+# Connexion de dbt à DuckDB. Le fichier .duckdb est créé dans <données>\warehouse\
+# (HORS OneDrive, hors dépôt Git). Le dossier warehouse doit exister.
+mobilityflow:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # Par défaut : <données>\warehouse\mobilityflow.duckdb. Airflow (Docker) construit sa propre
+      # copie ailleurs via MOBILITYFLOW_WAREHOUSE_PATH, puis la publie (voir le DAG).
+      path: "{{ env_var('MOBILITYFLOW_WAREHOUSE_PATH', env_var('MOBILITYFLOW_DATA_DIR', 'C:/dev/mobilityflow-data') ~ '/warehouse/mobilityflow.duckdb') }}"
+      threads: 1

@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: dim_station
+    description: Une ligne par station, avec capacité annoncée et observée, et dernier état connu.
+    columns:
+      - name: station_id
+        tests: [not_null, unique]
+      - name: capacity_observed
+        tests: [not_null]
+      - name: is_in_service_now
+        tests: [not_null]
+
+  - name: fct_station_hour
+    description: Une ligne par station, jour et heure (Paris) ; taux de vide, de plein et de remplissage.
+    columns:
+      - name: station_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_station')
+                field: station_id
+      - name: date_paris
+        tests: [not_null]
+      - name: hour_paris
+        tests: [not_null]
+
+  - name: fct_collection_hourly
+    description: Complétude de la collecte, par heure (60 relevés attendus).
+    columns:
+      - name: snapshots
+        tests: [not_null]
+
+  - name: fct_station_unchanged
+    description: Plus longue période sans changement par station (signal "station figée", seuil exploratoire).
+    columns:
+      - name: station_id
+        tests: [unique]
