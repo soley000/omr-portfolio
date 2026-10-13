@@ -12,7 +12,7 @@
 | **Approach** | Designed a standardized Excel panel, wrote VBA macros for cleaning and consolidation, added validation before integration into the internal statistical tool (SIM). |
 | **Key result** | Faster, more reliable multi-country updates, maintained over several years. |
 | **Stack** | Microsoft Excel · VBA |
-| **Context** | Industrial project — internal data is confidential. |
+| **Context** | Industrial project. Internal data is confidential. |
 
 ## Overview
 

@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Object Detection — YOLOv8, DETR & OWL-ViT
+# Object Detection : YOLOv8, DETR & OWL-ViT
 
 > Computer vision model comparison and interactive inference.
 
@@ -12,7 +12,7 @@
 | **Approach** | Compared a one-stage CNN, a Transformer detector and an open-vocabulary detector, and built a Streamlit app to run them alone or side by side. |
 | **Key result** | YOLOv8n: 139 ms, 3 objects · DETR: 1592 ms, 9 objects (~11× slower) · OWL-ViT: detects any object described in text. |
 | **Stack** | Python · PyTorch · Ultralytics · Hugging Face Transformers · OpenCV · Streamlit |
-| **Context** | Personal project |
+| **Context** | Open source |
 
 ## Overview
 

@@ -12,7 +12,7 @@
 | **Approach** | Designed an automated pipeline: extract objects from the text (LLM), detect objects in video frames (RAM), normalize both, compare. |
 | **Key result** | First evaluated version: 70% accuracy, 15% precision, 27% recall on videos with ground-truth labels. |
 | **Stack** | LLM · Recognize Anything Model (RAM) · Python · JSON · CSV |
-| **Context** | Industrial project — source code and data are confidential. |
+| **Context** | Industrial project. Source code and data are confidential. |
 
 ## Overview
 
@@ -112,7 +112,7 @@ The pipeline correctly identifies videos **without** hallucinations, but does no
 
 | Video | Predicted hallucination | Missing objects | Ground truth | Agreement |
 | ----- | ----------------------- | --------------- | ------------ | --------- |
-| 1_001 | False                   | —               | False        | True      |
+| 1_001 | False                   | none               | False        | True      |
 | 1_005 | True                    | traffic_light   | True         | True      |
 
 ## Outputs

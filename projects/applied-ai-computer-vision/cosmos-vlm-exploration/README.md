@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Vision Models Evaluation — Cosmos Reason1 & Reason2
+# Vision Models Evaluation : Cosmos Reason1 & Reason2
 
 > Exploratory evaluation of vision-language models for autonomous driving scene analysis.
 
@@ -12,7 +12,7 @@
 | **Approach** | Evaluation spike following NVIDIA's reference implementation: inference on 8 urban scenarios, structured outputs, scoring on 7 criteria. |
 | **Key finding** | Reason1 identified objects reliably and stayed faithful to the scene, but only partially captured spatial and temporal dynamics; ~72 s per inference. |
 | **Stack** | Cosmos Reason1/Reason2 · Hugging Face · `uv` · Conda · CUDA 11.8 · NVIDIA cloud GPU |
-| **Context** | Industrial project — exploratory spike preparing a future formal benchmark. |
+| **Context** | Industrial project. Exploratory spike preparing a future formal benchmark. |
 
 ## Overview
 
