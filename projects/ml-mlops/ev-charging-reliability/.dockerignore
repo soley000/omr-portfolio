@@ -1,0 +1,18 @@
+# Ce qui n'entre jamais dans l'image : environnement, données, notebooks, Git
+.venv/
+venv/
+.git/
+data/
+bundle/
+mlruns/
+exploration/
+docs/
+tests/
+**/__pycache__/
+.pytest_cache/
+*.ipynb
+*.parquet
+*.csv
+*.zip
+*.png
+make_*.ps1

@@ -1,0 +1,44 @@
+# CI de ChargeTriage : tests puis construction de l'image Docker, à chaque envoi qui touche le projet.
+name: ChargeTriage CI
+
+on:
+  push:
+    paths:
+      - "projects/ml-mlops/ev-charging-reliability/**"
+      - ".github/workflows/chargetriage.yml"
+  pull_request:
+    paths:
+      - "projects/ml-mlops/ev-charging-reliability/**"
+  workflow_dispatch:          # bouton « Run workflow » sur GitHub, pour relancer à la main
+
+defaults:
+  run:
+    working-directory: projects/ml-mlops/ev-charging-reliability
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: projects/ml-mlops/ev-charging-reliability/requirements.txt
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Lancer les tests (sans les données réelles)
+        run: python -m pytest
+
+  docker:
+    needs: tests              # on ne construit l'image que si les tests passent
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construire l'image
+        run: docker build -t chargetriage-api .
+      - name: Vérifier que l'API se charge dans l'image
+        run: docker run --rm chargetriage-api python -c "import api.main, evrel; print('Image OK')"

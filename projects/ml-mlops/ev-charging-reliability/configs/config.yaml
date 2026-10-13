@@ -1,0 +1,98 @@
+# Où sont les données (la variable EVREL_DATA_DIR est prioritaire si elle existe)
+data_dir: C:/dev/ev-reliability-data
+
+# Source, pour le téléchargement et le contrôle d'intégrité
+source:
+  url: https://ndownloader.figshare.com/files/52886138
+  md5: d2f43f19a3cfd5d364f97225e5f5d3ab
+  citation: "Zhang et al. (2025), Scientific Data, doi:10.6084/m9.figshare.28182251.v3 (CC BY 4.0)"
+
+# Nettoyage (justifié dans exploration/03_nettoyage.ipynb)
+cleaning:
+  start_date: "2020-01-01"     # décembre 2019 exclu : 17 sessions, codage atypique
+
+# Découpage temporel, selon la date du jour prédit
+split:
+  train:  ["2020-01-01", "2020-12-31"]
+  valid:  ["2021-01-01", "2021-04-30"]
+  test:   ["2021-05-01", "2021-08-31"]
+  replay: ["2021-09-01", "2021-12-31"]
+
+# Définition de la cible (justifiée dans exploration/02_eda.ipynb et 04_cible.ipynb)
+target:
+  hardware_causes:
+    - DC Output Fault
+    - Power conversion unit failure
+    - DC switching device failure
+    - AC Input Failure
+    - AC switching device failure
+    - Failure of non-system control loop components and assemblies
+    - Other faults of the charging pile
+    - System communications failure
+  excluded_ambiguous_causes:     # sens instable (rupture juin 2020) ou trop rare
+    - Faulty charging connection
+    - Vehicle Stake Interaction Failure
+  excluded_vehicle_causes:       # hors du champ de l'opérateur
+    - BMS failure
+    - Vehicle communications failure
+    - Vehicle charging faults
+  episode:
+    min_faults: 2                # décidé dans le notebook 04 (définition D)
+    min_ratio: 2                 # décidé dans le notebook 04 (définition D)
+    baseline_window_days: 28     # jours passés servant à calculer le niveau habituel
+
+# Évaluation : combien de bornes l'équipe peut inspecter par jour, et règle de décision
+evaluation:
+  top_k: [5, 10]
+  decision:                      # fixée dans le notebook 06, avant tout entraînement
+    min_gain: 0.03               # +3 points de précision@10 sur la meilleure baseline
+    confidence: 0.95             # intervalle de confiance du gain (bootstrap sur les soirs)
+    n_boot: 1000
+
+# Jours fériés officiels chinois (à vérifier sur une source officielle avant publication)
+calendar:
+  holidays:
+    - ["2020-01-01", "2020-01-01"]   # Nouvel An
+    - ["2020-01-24", "2020-02-02"]   # Fête du Printemps (prolongée en 2020)
+    - ["2020-04-04", "2020-04-06"]   # Qingming
+    - ["2020-05-01", "2020-05-05"]   # Fête du Travail
+    - ["2020-06-25", "2020-06-27"]   # Bateaux-dragons
+    - ["2020-10-01", "2020-10-08"]   # Fête nationale et Mi-Automne
+    - ["2021-01-01", "2021-01-03"]   # Nouvel An
+    - ["2021-02-11", "2021-02-17"]   # Fête du Printemps
+    - ["2021-04-03", "2021-04-05"]   # Qingming
+    - ["2021-05-01", "2021-05-05"]   # Fête du Travail
+    - ["2021-06-12", "2021-06-14"]   # Bateaux-dragons
+    - ["2021-09-19", "2021-09-21"]   # Mi-Automne
+    - ["2021-10-01", "2021-10-07"]   # Fête nationale
+
+# Modèles retenus (notebook 07) : la règle du bon sens est champion, le boosting est challenger
+models:
+  champion:
+    kind: rule
+    rule: "Pannes sur 7 jours"
+  challenger:
+    kind: hgb
+    use_site: true
+    params:
+      learning_rate: 0.05
+      max_iter: 200
+      max_leaf_nodes: 15
+      min_samples_leaf: 100
+
+# Surveillance en production simulée (phase 7). Règles fixées AVANT de lancer le rejeu.
+monitoring:
+  reference: ["2020-01-01", "2021-04-30"]   # dates prédites apprises par le champion (train + valid)
+  psi:
+    bins: 10
+    warn: 0.10          # à surveiller
+    alert: 0.25         # dérive
+  performance:
+    k: 10
+    window_days: 28     # précision@10 sur les 28 derniers jours connus
+    behind_weeks: 2     # alerte si le champion fait moins bien que le repli 2 contrôles hebdomadaires de suite
+  silent:
+    days: 7             # plus aucune recharge depuis 7 jours...
+    active_days: 28     # ...alors que la borne était active juste avant
+  retrain_if:
+    psi_alert_features: 3   # ou au moins 3 variables du modèle en dérive sur un même mois

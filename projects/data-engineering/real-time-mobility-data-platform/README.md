@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# MobilityFlow: Real-Time Mobility Data Platform
+# MobilityFlow: Bike-Sharing Station Availability Platform
 
 > An end-to-end data platform that turns a raw real-time bike-sharing feed into tested, decision-ready tables and a dashboard.
 

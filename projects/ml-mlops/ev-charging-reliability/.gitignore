@@ -1,0 +1,17 @@
+/data/
+*.csv
+*.parquet
+*.zip
+mlruns/
+mlflow.db
+*.pkl
+*.joblib
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.env
+docs/
+make_*.ps1
+bundle/
+*.egg-info/

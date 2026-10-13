@@ -1,0 +1,13 @@
+# Image de déploiement : l'image de l'API + le paquet (modèle champion et variables).
+# Contexte de construction = le dossier du paquet :
+#   docker build -f Dockerfile.deploy -t <compte>/chargetriage:v4 C:\dev\ev-reliability-data\bundle
+FROM chargetriage-api
+
+COPY . /app/bundle/
+
+LABEL org.opencontainers.image.title="ChargeTriage" \
+      org.opencontainers.image.description="Priorisation quotidienne des inspections de bornes de recharge" \
+      data.source="Zhang et al. (2025), Scientific Data, doi:10.6084/m9.figshare.28182251.v3, CC BY 4.0"
+
+# Render indique le port à écouter dans la variable PORT ; 8000 si elle n'existe pas.
+CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

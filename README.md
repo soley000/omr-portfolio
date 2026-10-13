@@ -13,7 +13,8 @@ Data & AI Engineer. Complex data turned into reliable solutions, from collection
 | [Vision-Language Models Exploration](projects/applied-ai-computer-vision/cosmos-vlm-exploration/) | Vision-language models | Industrial |
 | [Object Detection: YOLOv8, DETR & OWL-ViT](projects/applied-ai-computer-vision/object-detection/) | Computer vision | Open source |
 | [EV Charging Data Engineering](projects/data-engineering/ev-charging-data-engineering/) | Data engineering | Industrial |
-| [MobilityFlow: Real-Time Mobility Data Platform](projects/data-engineering/real-time-mobility-data-platform/) | Data engineering | Open source |
+| [MobilityFlow: Bike-Sharing Station Availability Platform](projects/data-engineering/real-time-mobility-data-platform/) | Data engineering | Open source |
+| [ChargeTriage: Daily Inspection Priorities for EV Charging Stations](projects/ml-mlops/ev-charging-reliability/) | Machine learning, MLOps | Open source |
 | [Industrial Data Automation](projects/supporting/industrial-data-automation/) | Data quality | Industrial |
 | [CO₂ Reduction: EV Adoption in France](projects/supporting/co2-ev-france/) | Machine learning | Open source |
 | [Real Estate Price Prediction](projects/supporting/real-estate-price-prediction/) | Machine learning | Open source |
