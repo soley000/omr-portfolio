@@ -1,10 +1,10 @@
 <a id="top"></a>
 
-# WM Benchmark : Evaluating Generative World Models for Autonomous Driving
+# WM Benchmark: Evaluating Generative World Models for Autonomous Driving
 
 > An end-to-end benchmarking platform that turns scattered model evaluations into comparable results, automatic quality labels and fast decisions.
 
-**[Overview](#overview)** · **[Why this project](#why-this-project)** · **[Solution](#solution)** · **[End-to-end delivery](#end-to-end-delivery)** · **[Results](#results)** · **[Classification](#automatic-quality-classification)** · **[Application](#application)** · **[Limitations](#limitations)**
+**[Live demo](#live-demo)** · **[Overview](#overview)** · **[Why this project](#why-this-project)** · **[Solution](#solution)** · **[End-to-end delivery](#end-to-end-delivery)** · **[Results](#results)** · **[Classification](#automatic-quality-classification)** · **[Application](#application)** · **[Limitations](#limitations)**
 
 ![WM Benchmark end to end](../../../assets/images/wm_benchmark_end_to_end.png)
 
@@ -14,7 +14,7 @@
 | **Approach** | Designed and built, from inference to deployment, a model-agnostic benchmark: run models, measure them, centralize results, classify runs automatically, compare and decide in a web application. |
 | **Key result** | 381 runs and 4,753 metrics centralized; quality classifier at 94.83% accuracy and F1; deployed application usable without technical skills. |
 | **Stack** | Python · PyTorch · Docker · PostgreSQL · FastAPI · scikit-learn · HTML/CSS/JS |
-| **Context** | Industrial project, professional thesis. Code and data are not published. |
+| **Context** | Industrial project, professional thesis. Code and data are not published; a live demo is available on invitation. |
 
 ## Overview
 
@@ -115,7 +115,7 @@ The selection deliberately contrasts a **specialized** driving model (VaViM, tra
 
 Moving from the Small to the Large model costs about 3.5× more GPU memory for a 0.19 dB gain: **bigger is not automatically better**, a decision the benchmark now makes visible. The best predictions come from smooth, straight-line scenes; the worst from intersections and sudden events.
 
-| Good run : straight road | Poor run : intersection |
+| Good run: straight road | Poor run: intersection |
 |:---:|:---:|
 | ![VaViM good run](../../../assets/images/wm_benchmark_vavim_good.png) | ![VaViM poor run](../../../assets/images/wm_benchmark_vavim_bad.png) |
 
@@ -160,6 +160,13 @@ The result that matters most for decision-making: the classifier **never mistake
 | Prediction | Estimate a run's likely quality, duration and GPU memory before launching it; for a model taking about 20 minutes per run, skipping a run predicted as insufficient saves compute directly |
 | About | Explains world models, metrics and labels so a newcomer understands the tool in under two minutes |
 
+### Live demo
+
+**[Open the demo](https://wm-benchmark.onrender.com)**: the About page is public; the dashboard, run upload and prediction are available on invitation.
+
+* The demo serves a fixed snapshot of the benchmark (7 models, 381 runs, 4,753 metrics). Runs added during a demo are discarded when the service restarts.
+* The service runs on a free plan that sleeps when unused: the first page can take about one minute to load.
+
 ## Architecture
 
 ```mermaid
@@ -172,12 +179,12 @@ flowchart LR
     F --> G["Dashboard &<br/>prediction"]
 ```
 
-The application does not run the models, which require heavy GPU infrastructure: it handles everything after inference. The backend serves both the API and the interface, and the classifier is loaded once at startup so that every answer comes back in milliseconds.
+The application does not run the models, which require heavy GPU infrastructure: it handles everything after inference. The industrial version stores results in PostgreSQL; the public demo uses a SQLite copy of the same data, so it never expires and costs nothing. The backend serves both the API and the interface, and the classifier is loaded once at startup so that every answer comes back in milliseconds.
 
 <details>
 <summary><b>Compliance</b></summary>
 
-* **GDPR**: no personal data collected or stored, no cookies, no user accounts; credentials kept out of version control.
+* **GDPR**: no personal data collected or stored, no user accounts, no tracking; the demo's access password and credentials are kept out of version control.
 * **EU AI Act**: internal decision-support tool, no autonomous decision about people; minimal risk.
 * **Accessibility**: large text, WCAG AAA contrast, keyboard navigation.
 * **Licenses**: datasets and models used under their respective licenses (nuScenes CC BY-NC-SA 4.0, VaViM MIT/RAIL, Cosmos NVIDIA Open Model License).
@@ -190,7 +197,7 @@ The application does not run the models, which require heavy GPU infrastructure:
 |---|---|
 | Inference | PyTorch, Docker, NVIDIA GH200 (ARM) |
 | Video metrics | LPIPS, OpenCV, scikit-image, NumPy |
-| Data | PostgreSQL |
+| Data | PostgreSQL (SQLite for the public demo) |
 | Machine Learning | scikit-learn, pandas |
 | Backend | Python, FastAPI |
 | Frontend | HTML, CSS, JavaScript |
