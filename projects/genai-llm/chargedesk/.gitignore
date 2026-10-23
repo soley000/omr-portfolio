@@ -1,0 +1,12 @@
+/.venv/
+/data/
+/docs/
+/dbt/target/
+/dbt/logs/
+/dbt/dbt_packages/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+*.duckdb
+*.zip
+.env

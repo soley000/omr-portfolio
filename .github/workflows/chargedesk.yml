@@ -1,0 +1,55 @@
+# CI de ChargeDesk. A placer a la racine du depot : .github/workflows/chargedesk.yml
+# Aucune cle API, aucun appel a un LLM, aucune vraie donnee : les tests utilisent un faux LLM
+# et un entrepot fictif ; l'image est construite avec des donnees fictives puis demarree.
+name: chargedesk
+
+on:
+  push:
+    paths: ["projects/genai-llm/chargedesk/**", ".github/workflows/chargedesk.yml"]
+  pull_request:
+    paths: ["projects/genai-llm/chargedesk/**", ".github/workflows/chargedesk.yml"]
+
+defaults:
+  run:
+    working-directory: projects/genai-llm/chargedesk
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Dependances (versions figees)
+        run: pip install -r requirements-ci.txt -c requirements.txt
+      - name: Tests
+        run: python -m pytest -q
+
+  image:
+    needs: tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Donnees fictives pour l'image
+        run: |
+          pip install -r requirements-ci.txt -c requirements.txt
+          python tests/make_fake_data.py "$RUNNER_TEMP/fakedata"
+      - name: Construction de l'image
+        run: docker build --build-context data="$RUNNER_TEMP/fakedata" -t chargedesk:ci .
+      - name: Demarrage et controles
+        run: |
+          docker run -d --name chargedesk -p 8000:8000 chargedesk:ci
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/health && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8000/health
+          curl -fsS http://127.0.0.1:8000/evening/2021-10-05 | python -c "import json,sys; assert len(json.load(sys.stdin)['list']) == 10"
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://127.0.0.1:8000/ask \
+                 -H "Content-Type: application/json" -d '{"question":"Liste ?","evening":"2021-10-05"}')
+          test "$code" = "503"   # sans cle API : message clair, pas de plantage
+          docker exec chargedesk whoami | grep -qx app   # utilisateur sans droits d'administration
+      - name: Journal du conteneur (en cas d'echec)
+        if: failure()
+        run: docker logs chargedesk || true

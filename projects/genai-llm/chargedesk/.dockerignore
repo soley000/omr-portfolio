@@ -1,0 +1,14 @@
+# Seuls configs/, src/ et api/ entrent dans l'image ; le reste ne doit meme pas etre envoye au constructeur
+.venv/
+.env
+*.zip
+**/__pycache__/
+.pytest_cache/
+dbt/target/
+dbt/logs/
+exploration/
+eval/
+tests/
+docs/
+ci/
+*.egg-info/

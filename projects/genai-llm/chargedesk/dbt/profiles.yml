@@ -1,0 +1,8 @@
+chargedesk:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('CHARGEDESK_DATA_DIR', 'C:/dev/chargedesk-data') }}/chargedesk.duckdb"
+      schema: main
+      threads: 1

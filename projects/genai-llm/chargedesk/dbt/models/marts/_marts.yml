@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: dim_post
+    description: "Une ligne par borne (92 bornes) : attributs fixes seulement (site, district, premier jour). Aucune information datee : la derniere recharge et les totaux se calculent depuis fct_post_day jusqu'au soir courant."
+    columns:
+      - name: post_id
+        description: "Numero de la borne (1 a 92)."
+        data_tests: [not_null]
+      - name: site
+        description: "Site ou se trouve la borne (13 sites)."
+        data_tests: [not_null]
+
+  - name: dim_site
+    description: "Une ligne par site : district et nombre de bornes."
+    columns:
+      - name: site
+        data_tests: [not_null, unique]
+
+  - name: fct_post_day
+    description: "Une ligne par borne et par jour (2020-2021). Connu a partir de available_from (le jour meme)."
+    columns:
+      - name: post_id
+        data_tests: [not_null]
+      - name: day
+        data_tests: [not_null]
+      - name: n_hw_faults
+        description: "Pannes materielles de la borne ce jour-la (defauts du vehicule exclus)."
+      - name: hw_fault_rate
+        description: "Part des recharges terminees par une panne materielle (vide si aucune recharge)."
+      - name: baseline_rate
+        description: "Niveau habituel de la borne : taux sur les 28 jours precedents, jour exclu."
+      - name: is_episode
+        description: "Episode anormal : au moins 2 pannes et un taux au moins double du niveau habituel. Vide si non observable."
+      - name: available_from
+        description: "Date a partir de laquelle la ligne est connue."
+        data_tests: [not_null]
+
+  - name: fct_evening_list
+    description: "Top 10 de chaque soir du rejeu (31/08 au 30/12/2021), pour le modele champion et le modele fallback."
+    columns:
+      - name: evening
+        description: "Soir ou la liste est produite."
+        data_tests: [not_null]
+      - name: model
+        description: "champion (gradient boosting) ou fallback (regle des pannes sur 7 jours)."
+        data_tests: [not_null]
+      - name: rank
+        description: "Rang dans la liste, 1 = borne la plus a risque."
+        data_tests: [not_null]
+      - name: score
+        description: "Risque estime d'un episode le lendemain, entre 0 et 1."
+      - name: episode_next_day
+        description: "Episode le lendemain. Ne jamais montrer avant outcome_known_from."
+      - name: outcome_known_from
+        description: "Date a partir de laquelle episode_next_day est connu (le lendemain)."
+        data_tests: [not_null]
+
+  - name: fct_post_evening
+    description: "Une ligne par borne et par soir, pour TOUS les soirs : variables qui expliquent une borne (pannes et recharges sur 3, 7 et 28 jours, jours sans recharge, episodes, jours depuis le dernier episode). Fenetres qui finissent le soir J, jour J compris ; connues le soir meme. Identiques a celles de ChargeTriage la ou les deux existent (test)."
+    columns:
+      - name: post_id
+        data_tests: [not_null]
+      - name: evening
+        data_tests: [not_null]
+      - name: hw_faults_7d
+        description: "Pannes materielles du soir J-6 au soir J."
+      - name: hw_faults_28d
+        description: "Pannes materielles du soir J-27 au soir J."
+      - name: hw_rate_7d
+        description: "Taux de pannes sur 7 jours (vide si aucune recharge)."
+      - name: idle_days_7d
+        description: "Jours sans aucune recharge sur les 7 derniers jours."
+      - name: episodes_28d
+        description: "Nombre d'episodes anormaux sur les 28 derniers jours."
+      - name: days_since_episode
+        description: "Jours depuis le dernier episode, plafonnes a 365 (365 si aucun episode), comme dans ChargeTriage."
+      - name: available_from
+        data_tests: [not_null]
+
+  - name: fct_post_signals
+    description: "TABLE D'ENTRAINEMENT DE CHARGETRIAGE, INTERDITE A L'AGENT. Une ligne n'existe que si le lendemain est observable : sa simple presence revele le futur. Sert seulement a verifier fct_post_evening."
+    columns:
+      - name: post_id
+        data_tests: [not_null]
+      - name: evening
+        data_tests: [not_null]
+      - name: outcome_known_from
+        data_tests: [not_null]
+
+  - name: fct_silent_alert
+    description: "Alertes de bornes muettes : plus aucune recharge depuis plusieurs jours. Ce n'est pas une prediction, c'est une absence d'activite. Une alerte n'est pas un etat : pour savoir si une borne est toujours muette, regarder fct_post_day."
+    columns:
+      - name: post_id
+        data_tests: [not_null]
+      - name: days_silent
+        description: "Nombre de jours entre la derniere recharge et l'alerte."
+      - name: available_from
+        data_tests: [not_null]
+
+  - name: fct_drift_month
+    description: "Derive mensuelle de chaque variable du modele (PSI). level : stable (< 0,10), watch (0,10 a 0,25), drift (> 0,25)."
+    columns:
+      - name: feature
+        data_tests: [not_null]
+      - name: level
+        data_tests: [not_null]
+      - name: available_from
+        description: "Dernier jour du mois : la derive d'un mois n'est connue qu'a sa fin."
+        data_tests: [not_null]
+
+  - name: fct_list_daily_hits
+    description: "Une ligne par soir et par modele : combien de bornes de la liste ont eu un episode le lendemain. precision = part des bornes au resultat connu qui ont eu un episode."
+    columns:
+      - name: evening
+        data_tests: [not_null]
+      - name: model
+        data_tests: [not_null]
+      - name: outcome_known_from
+        data_tests: [not_null]

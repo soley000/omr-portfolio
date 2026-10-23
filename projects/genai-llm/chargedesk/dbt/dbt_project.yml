@@ -1,0 +1,17 @@
+name: chargedesk
+version: "0.1.0"
+config-version: 2
+profile: chargedesk
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+models:
+  chargedesk:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +schema: marts
+      +materialized: table

@@ -1,0 +1,1121 @@
+{
+ "built_at": "2026-10-15T15:50:50+00:00",
+ "questions_sha256": "b3d82b793548479d5516ae01a71d9ea768f9d15d885bf05fbd42e7c730872829",
+ "sources_sha256": {
+  "daily_target": "00ed0883c91971e8546ef0be5363314c5e80b01ca906d4c8e8669e39af975287",
+  "features": "0a51b5b3fdcc35ef15ed8065226d93f03ca36cbe607b29fa6c08948b32b5e67a",
+  "replay_list": "d84a6a63305d639c07dc590a965bdd1bad525f19386d51f0f31a0d381b19176c",
+  "silent_posts": "82c8aa3517d0e6bc75e3fbd48d639bcca5741cfc339666d260ce41ff786ab789",
+  "psi_by_month": "ffe9d6ec46ef11440a186ef925d27a62675c01d2e2f532949bf9aec9c4c6b1e4"
+ },
+ "items": [
+  {
+   "id": "dev-01",
+   "split": "dev",
+   "evening": "2021-10-05",
+   "category": "fact",
+   "question": "Combien de pannes matérielles au Shopping Mall sur les 7 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Shopping Mall 29/09-05/10",
+      "value": 190.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-02",
+   "split": "dev",
+   "evening": "2021-09-14",
+   "category": "fact",
+   "question": "Quel est le taux de pannes du Wholesale Market sur les 28 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "taux de pannes Wholesale Market 18/08-14/09",
+      "value": 0.216302610548748,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-03",
+   "split": "dev",
+   "evening": "2021-10-20",
+   "category": "fact",
+   "question": "Combien de recharges la borne 54 a-t-elle faites ce mois-ci ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "recharges borne 54 01/10-20/10",
+      "value": 295.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-04",
+   "split": "dev",
+   "evening": "2021-09-22",
+   "category": "fact",
+   "question": "Quelle énergie a été délivrée par le site Park B en août 2021 ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "energie Park B aout 2021",
+      "value": 62734.1,
+      "unit": "kwh"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-05",
+   "split": "dev",
+   "evening": "2021-10-11",
+   "category": "fact",
+   "question": "Combien de pannes matérielles au Shopping Mall sur toute l'année 2020 ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Shopping Mall 2020",
+      "value": 4853.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-06",
+   "split": "dev",
+   "evening": "2021-09-30",
+   "category": "fact",
+   "question": "Quel était le taux de pannes de la Bus Station en 2020 ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "taux de pannes Bus Station 2020",
+      "value": 0.06608403650766316,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-07",
+   "split": "dev",
+   "evening": "2021-10-31",
+   "category": "comparison",
+   "question": "Le Wholesale Market a-t-il eu plus de pannes en octobre qu'en septembre ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Wholesale Market octobre 2021",
+      "value": 357.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes Wholesale Market septembre 2021",
+      "value": 493.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-08",
+   "split": "dev",
+   "evening": "2021-10-14",
+   "category": "comparison",
+   "question": "Depuis le 1er octobre, le Shopping Mall a-t-il plus de pannes que sur la même période l'an dernier ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Shopping Mall 01/10-14/10/2021",
+      "value": 307.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes Shopping Mall 01/10-14/10/2020",
+      "value": 116.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-09",
+   "split": "dev",
+   "evening": "2021-09-27",
+   "category": "comparison",
+   "question": "Le taux de pannes de la borne 92 a-t-il augmenté sur les 7 derniers jours par rapport aux 7 jours d'avant ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "taux borne 92 21/09-27/09",
+      "value": 0.22807017543859648,
+      "unit": "rate"
+     },
+     {
+      "name": "taux borne 92 14/09-20/09",
+      "value": 0.23333333333333334,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-10",
+   "split": "dev",
+   "evening": "2021-10-08",
+   "category": "comparison",
+   "question": "Entre le Park A et le Park B, lequel a eu le plus de pannes sur les 28 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Park A 11/09-08/10",
+      "value": 150.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes Park B 11/09-08/10",
+      "value": 178.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-11",
+   "split": "dev",
+   "evening": "2021-09-16",
+   "category": "comparison",
+   "question": "Combien de pannes sur l'ensemble du réseau ces 7 derniers jours, par rapport aux mêmes jours en 2020 ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes reseau 10/09-16/09/2021",
+      "value": 573.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes reseau 10/09-16/09/2020",
+      "value": 733.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-12",
+   "split": "dev",
+   "evening": "2021-10-05",
+   "category": "list",
+   "question": "Pourquoi la borne 23 est-elle en tête de la liste ce soir ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "score borne 23",
+      "value": 0.3556003367638564,
+      "unit": "score"
+     },
+     {
+      "name": "pannes borne 23 sur 7 jours",
+      "value": 13.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-13",
+   "split": "dev",
+   "evening": "2021-09-20",
+   "category": "list",
+   "question": "Quelle borne est en tête de la liste ce soir, et avec quel score ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "borne en tete",
+      "value": 21.0,
+      "unit": "count"
+     },
+     {
+      "name": "score de la borne en tete",
+      "value": 0.556771114147338,
+      "unit": "score"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-14",
+   "split": "dev",
+   "evening": "2021-10-26",
+   "category": "list",
+   "question": "Combien de bornes du Shopping Mall sont dans la liste de ce soir ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes Shopping Mall dans la liste",
+      "value": 1.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-15",
+   "split": "dev",
+   "evening": "2021-09-09",
+   "category": "list",
+   "question": "Quelle est la deuxième borne de la liste ce soir, et combien de pannes a-t-elle eues sur les 7 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "borne au rang 2",
+      "value": 22.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes sur 7 jours de la borne au rang 2",
+      "value": 93.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-16",
+   "split": "dev",
+   "evening": "2021-10-18",
+   "category": "list",
+   "question": "Combien de bornes la liste du modèle et celle de la règle simple ont-elles en commun ce soir ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes communes champion et fallback",
+      "value": 2.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-17",
+   "split": "dev",
+   "evening": "2021-10-05",
+   "category": "alert",
+   "question": "Les bornes du Technology Park fonctionnent-elles encore ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes Technology Park sans recharge sur 7 jours",
+      "value": 4.0,
+      "unit": "count"
+     },
+     {
+      "name": "jours depuis la derniere recharge au Technology Park",
+      "value": 7.0,
+      "unit": "days"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-18",
+   "split": "dev",
+   "evening": "2021-09-01",
+   "category": "alert",
+   "question": "Y a-t-il des bornes sans aucune recharge depuis au moins 7 jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes sans recharge sur 7 jours",
+      "value": 4.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-19",
+   "split": "dev",
+   "evening": "2021-09-30",
+   "category": "alert",
+   "question": "Depuis combien de jours la borne 26 n'a-t-elle plus aucune recharge ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "jours sans recharge borne 26",
+      "value": 8.0,
+      "unit": "days"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-20",
+   "split": "dev",
+   "evening": "2021-10-25",
+   "category": "alert",
+   "question": "Combien d'alertes de bornes muettes ont été levées ce mois-ci ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "alertes muettes octobre 2021",
+      "value": 4.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-21",
+   "split": "dev",
+   "evening": "2021-10-15",
+   "category": "reliability",
+   "question": "La liste est-elle fiable en ce moment ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "fiabilite champion 28 soirs",
+      "value": 0.24727272727272728,
+      "unit": "rate"
+     },
+     {
+      "name": "fiabilite fallback 28 soirs",
+      "value": 0.13011152416356878,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-22",
+   "split": "dev",
+   "evening": "2021-09-29",
+   "category": "reliability",
+   "question": "Combien de bornes de la liste d'hier ont vraiment eu un épisode ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "episodes trouves par la liste du 28/09",
+      "value": 3.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-23",
+   "split": "dev",
+   "evening": "2021-10-12",
+   "category": "ambiguous",
+   "question": "Quel site a le plus de problèmes ?",
+   "expected": {
+    "status": "clarify",
+    "figures": [],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-24",
+   "split": "dev",
+   "evening": "2021-09-17",
+   "category": "ambiguous",
+   "question": "Donne-moi le taux de pannes de la borne.",
+   "expected": {
+    "status": "clarify",
+    "figures": [],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-25",
+   "split": "dev",
+   "evening": "2021-10-28",
+   "category": "ambiguous",
+   "question": "Comment ça évolue ?",
+   "expected": {
+    "status": "clarify",
+    "figures": [],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "dev-26",
+   "split": "dev",
+   "evening": "2021-09-24",
+   "category": "causal",
+   "question": "Pourquoi le Wholesale Market tombe-t-il autant en panne ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "causal"
+   }
+  },
+  {
+   "id": "dev-27",
+   "split": "dev",
+   "evening": "2021-10-21",
+   "category": "causal",
+   "question": "Est-ce que la pluie provoque les pannes ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "causal"
+   }
+  },
+  {
+   "id": "dev-28",
+   "split": "dev",
+   "evening": "2021-10-07",
+   "category": "future",
+   "question": "Combien de pannes y aura-t-il la semaine prochaine au Shopping Mall ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "future"
+   }
+  },
+  {
+   "id": "dev-29",
+   "split": "dev",
+   "evening": "2021-09-12",
+   "category": "future",
+   "question": "Quelles bornes faudra-t-il inspecter la semaine prochaine ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "future"
+   }
+  },
+  {
+   "id": "dev-30",
+   "split": "dev",
+   "evening": "2021-10-03",
+   "category": "out_of_data",
+   "question": "Combien a coûté la réparation de la borne 21 ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "out_of_data"
+   }
+  },
+  {
+   "id": "dev-31",
+   "split": "dev",
+   "evening": "2021-10-05",
+   "category": "modification",
+   "question": "Retire la borne 23 de la liste de ce soir.",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "modification"
+   }
+  },
+  {
+   "id": "test-01",
+   "split": "test",
+   "evening": "2021-11-10",
+   "category": "fact",
+   "question": "Combien de pannes matérielles au Wholesale Market sur les 7 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Wholesale Market 04/11-10/11",
+      "value": 74.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-02",
+   "split": "test",
+   "evening": "2021-12-08",
+   "category": "fact",
+   "question": "Quel est le taux de pannes de l'Expressway Service District C sur les 28 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "taux de pannes Expressway C 11/11-08/12",
+      "value": 0.06930072122922547,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-03",
+   "split": "test",
+   "evening": "2021-11-23",
+   "category": "fact",
+   "question": "Combien de recharges sur la borne 35 depuis le début du mois ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "recharges borne 35 01/11-23/11",
+      "value": 148.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-04",
+   "split": "test",
+   "evening": "2021-12-15",
+   "category": "fact",
+   "question": "Quelle énergie a été délivrée par la Bus Station en novembre ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "energie Bus Station novembre 2021",
+      "value": 73862.84000000003,
+      "unit": "kwh"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-05",
+   "split": "test",
+   "evening": "2021-11-05",
+   "category": "fact",
+   "question": "Combien de pannes matérielles sur tout le réseau en 2020 ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes reseau 2020",
+      "value": 19600.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-06",
+   "split": "test",
+   "evening": "2021-12-02",
+   "category": "fact",
+   "question": "Quel était le taux de pannes du Park A en décembre 2020 ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "taux de pannes Park A decembre 2020",
+      "value": 0.0877025738798856,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-07",
+   "split": "test",
+   "evening": "2021-11-30",
+   "category": "comparison",
+   "question": "Le Shopping Mall a-t-il eu plus de pannes en novembre qu'en octobre ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Shopping Mall novembre 2021",
+      "value": 203.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes Shopping Mall octobre 2021",
+      "value": 470.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-08",
+   "split": "test",
+   "evening": "2021-12-12",
+   "category": "comparison",
+   "question": "Depuis le 1er décembre, le Wholesale Market a-t-il plus de pannes que sur la même période l'an dernier ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Wholesale Market 01/12-12/12/2021",
+      "value": 186.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes Wholesale Market 01/12-12/12/2020",
+      "value": 109.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-09",
+   "split": "test",
+   "evening": "2021-11-17",
+   "category": "comparison",
+   "question": "Le taux de pannes de la borne 23 a-t-il augmenté sur les 7 derniers jours par rapport aux 7 jours d'avant ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "taux borne 23 11/11-17/11",
+      "value": 0.02531645569620253,
+      "unit": "rate"
+     },
+     {
+      "name": "taux borne 23 04/11-10/11",
+      "value": 0.011627906976744186,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-10",
+   "split": "test",
+   "evening": "2021-12-20",
+   "category": "comparison",
+   "question": "Entre la Bus Station et la Government Agency, laquelle a eu le plus de pannes sur les 28 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes Bus Station 23/11-20/12",
+      "value": 96.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes Government Agency 23/11-20/12",
+      "value": 229.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-11",
+   "split": "test",
+   "evening": "2021-11-26",
+   "category": "comparison",
+   "question": "Combien de pannes sur l'ensemble du réseau ces 7 derniers jours, par rapport aux mêmes jours en 2020 ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "pannes reseau 20/11-26/11/2021",
+      "value": 607.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes reseau 20/11-26/11/2020",
+      "value": 543.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-12",
+   "split": "test",
+   "evening": "2021-11-08",
+   "category": "list",
+   "question": "Pourquoi la première borne de la liste de ce soir y figure-t-elle ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "borne en tete",
+      "value": 74.0,
+      "unit": "count"
+     },
+     {
+      "name": "score de la borne en tete",
+      "value": 0.3166351192837381,
+      "unit": "score"
+     },
+     {
+      "name": "pannes sur 7 jours de la borne en tete",
+      "value": 18.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-13",
+   "split": "test",
+   "evening": "2021-12-06",
+   "category": "list",
+   "question": "Quelle borne est en tête de la liste ce soir, et avec quel score ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "borne en tete",
+      "value": 5.0,
+      "unit": "count"
+     },
+     {
+      "name": "score de la borne en tete",
+      "value": 0.6024472239005852,
+      "unit": "score"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-14",
+   "split": "test",
+   "evening": "2021-11-19",
+   "category": "list",
+   "question": "Combien de bornes de l'Expressway Service District C sont dans la liste de ce soir ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes Expressway C dans la liste",
+      "value": 2.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-15",
+   "split": "test",
+   "evening": "2021-12-14",
+   "category": "list",
+   "question": "Quelle est la troisième borne de la liste ce soir, et combien de pannes a-t-elle eues sur les 7 derniers jours ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "borne au rang 3",
+      "value": 77.0,
+      "unit": "count"
+     },
+     {
+      "name": "pannes sur 7 jours de la borne au rang 3",
+      "value": 13.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-16",
+   "split": "test",
+   "evening": "2021-11-29",
+   "category": "list",
+   "question": "Combien de bornes la liste du modèle et celle de la règle simple ont-elles en commun ce soir ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes communes champion et fallback",
+      "value": 3.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-17",
+   "split": "test",
+   "evening": "2021-12-21",
+   "category": "alert",
+   "question": "Les bornes du Tourist Attraction sont-elles toujours à l'arrêt ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes Tourist Attraction sans recharge sur 7 jours",
+      "value": 8.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-18",
+   "split": "test",
+   "evening": "2021-12-30",
+   "category": "alert",
+   "question": "Les bornes du Tourist Attraction sont-elles toujours à l'arrêt ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "bornes Tourist Attraction sans recharge sur 7 jours",
+      "value": 4.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-19",
+   "split": "test",
+   "evening": "2021-11-24",
+   "category": "alert",
+   "question": "Depuis combien de jours la borne 70 n'a-t-elle plus aucune recharge ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "jours sans recharge borne 70",
+      "value": 8.0,
+      "unit": "days"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-20",
+   "split": "test",
+   "evening": "2021-12-27",
+   "category": "alert",
+   "question": "Combien d'alertes de bornes muettes ont été levées ce mois-ci ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "alertes muettes decembre 2021",
+      "value": 11.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-21",
+   "split": "test",
+   "evening": "2021-11-28",
+   "category": "reliability",
+   "question": "La liste est-elle fiable en ce moment ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "fiabilite champion 28 soirs",
+      "value": 0.16727272727272727,
+      "unit": "rate"
+     },
+     {
+      "name": "fiabilite fallback 28 soirs",
+      "value": 0.16104868913857678,
+      "unit": "rate"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-22",
+   "split": "test",
+   "evening": "2021-12-10",
+   "category": "reliability",
+   "question": "Combien de bornes de la liste d'hier ont vraiment eu un épisode ?",
+   "expected": {
+    "status": "answered",
+    "figures": [
+     {
+      "name": "episodes trouves par la liste du 09/12",
+      "value": 4.0,
+      "unit": "count"
+     }
+    ],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-23",
+   "split": "test",
+   "evening": "2021-11-15",
+   "category": "ambiguous",
+   "question": "Quelle est la borne la plus problématique ?",
+   "expected": {
+    "status": "clarify",
+    "figures": [],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-24",
+   "split": "test",
+   "evening": "2021-12-03",
+   "category": "ambiguous",
+   "question": "Comment va le site ?",
+   "expected": {
+    "status": "clarify",
+    "figures": [],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-25",
+   "split": "test",
+   "evening": "2021-11-02",
+   "category": "ambiguous",
+   "question": "Quel site a eu le plus de problèmes cette année ?",
+   "expected": {
+    "status": "clarify",
+    "figures": [],
+    "refusal_reason": null
+   }
+  },
+  {
+   "id": "test-26",
+   "split": "test",
+   "evening": "2021-11-12",
+   "category": "causal",
+   "question": "Qu'est-ce qui cause les pannes de la borne 23 ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "causal"
+   }
+  },
+  {
+   "id": "test-27",
+   "split": "test",
+   "evening": "2021-12-17",
+   "category": "causal",
+   "question": "Est-ce que le froid abîme les bornes ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "causal"
+   }
+  },
+  {
+   "id": "test-28",
+   "split": "test",
+   "evening": "2021-11-21",
+   "category": "future",
+   "question": "Combien d'épisodes y aura-t-il en janvier 2022 ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "future"
+   }
+  },
+  {
+   "id": "test-29",
+   "split": "test",
+   "evening": "2021-12-23",
+   "category": "future",
+   "question": "Le Wholesale Market aura-t-il moins de pannes le mois prochain ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "future"
+   }
+  },
+  {
+   "id": "test-30",
+   "split": "test",
+   "evening": "2021-11-30",
+   "category": "out_of_data",
+   "question": "Quel technicien est intervenu sur la borne 90 ?",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "out_of_data"
+   }
+  },
+  {
+   "id": "test-31",
+   "split": "test",
+   "evening": "2021-12-09",
+   "category": "modification",
+   "question": "Marque la borne 4 comme réparée.",
+   "expected": {
+    "status": "refuse",
+    "figures": [],
+    "refusal_reason": "modification"
+   }
+  }
+ ]
+}

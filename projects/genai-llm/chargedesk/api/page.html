@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChargeDesk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f6f8; --card: #ffffff; --ink: #16202b; --muted: #55626f; --line: #e1e6eb; --line-soft: #eef1f4;
+    --accent: #0b6e99; --accent-soft: #eef6fa; --link: #0b5f8a; --field: #aebdca; --chip: #c9d4de;
+    --warn-bg: #fdf3e1; --warn-line: #f0d9ae; --warn-chip: #e8c98f; --warn-ink: #6b3d00; --warn-text: #5c4a2e;
+    --ok: #1a7f37; --clar: #9a6700; --bad: #b42318;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1419; --card: #182029; --ink: #e6ebf0; --muted: #9aa8b6; --line: #2a3542; --line-soft: #222c37;
+            --accent: #3ea6d8; --accent-soft: #15303f; --link: #6cc0ea; --field: #3a4858; --chip: #3a4858;
+            --warn-bg: #2d2412; --warn-line: #4d3c1a; --warn-chip: #6b5424; --warn-ink: #e3a948; --warn-text: #d8c39c;
+            --ok: #3fb950; --clar: #d29922; --bad: #f47067; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column;
+         font: 15px/1.5 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .wrap { max-width: 1280px; width: 100%; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+  @media (max-width: 640px) { .wrap { padding-left: 16px; padding-right: 16px; } }
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  header { background: var(--card); border-bottom: 1px solid var(--line); }
+  header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding-top: 10px; padding-bottom: 10px; }
+  .brand { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .brand b { font-size: 18px; }
+  .brand span { font-size: 14px; color: var(--muted); }
+  .day { display: flex; align-items: center; gap: 6px; position: relative; }
+  .sq { width: 40px; height: 40px; border: 1px solid var(--line); background: var(--card); border-radius: 8px; font-size: 16px; }
+  .sq:disabled { opacity: .35; cursor: default; }
+  .daybtn { min-height: 40px; border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 0 14px; font-weight: 500; }
+  .panel { position: absolute; right: 0; top: 46px; z-index: 5; width: min(320px, calc(100vw - 32px)); background: var(--card); border: 1px solid var(--line);
+           border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .panel[hidden] { display: none; }
+  .panel label { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  .panel input { font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+  .panel .k { font-size: 13px; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 10px; font-size: 13px; min-height: 32px; }
+  .chips button.on { border-color: var(--accent); color: var(--accent); }
+  .panel .cov { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 8px; }
+
+  .main { flex: 1; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; padding-top: 32px; padding-bottom: 28px; }
+  .assistant { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  h1 { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; }
+  .lead { margin: 6px 0 0; font-size: 16px; color: var(--muted); }
+  form { display: flex; gap: 8px; background: var(--card); border: 1px solid var(--field); border-radius: 14px; padding: 8px 8px 8px 18px;
+         box-shadow: 0 2px 10px rgba(22,32,43,.06); }
+  form input { flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 17px; background: transparent; color: inherit; }
+  form button { background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 0 22px; min-height: 48px; font-weight: 500; font-size: 16px; }
+  form button:disabled { opacity: .5; cursor: wait; }
+  .sugg { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sugg[hidden] { display: none; }
+  .sugg button { border: 1px solid var(--chip); background: var(--card); border-radius: 999px; padding: 9px 14px; font-size: 14px; min-height: 44px; text-align: left; }
+  .sugg button:hover { border-color: var(--accent); }
+  .sugg button.alert { background: var(--warn-bg); border-color: var(--warn-chip); color: var(--warn-ink); }
+  .sugg button.more { border-style: dashed; background: none; color: var(--link); }
+  #wait { font-size: 14px; color: var(--muted); }
+  #wait:empty { display: none; }
+  .answer { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+  .answer .top { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); }
+  .st { font-weight: 600; white-space: nowrap; }
+  .st.answered { color: var(--ok); } .st.clarify { color: var(--clar); } .st.refuse { color: var(--bad); }
+  .answer .txt { font-size: 17px; line-height: 1.6; white-space: pre-line; }
+  .figs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .fig { background: var(--bg); border-radius: 10px; padding: 10px 14px; min-width: 150px; flex: 0 1 auto; }
+  .fig .k { font-size: 12px; color: var(--muted); }
+  .fig .v { font-size: 22px; }
+  .foot { font-size: 13px; color: var(--muted); }
+  .foot.prep { color: var(--ok); }
+  details { font-size: 13px; color: var(--muted); }
+  details summary { cursor: pointer; }
+  details ol { margin: 4px 0 0; padding-left: 18px; }
+  details.more .figs { margin-top: 8px; }
+  .hint { color: var(--muted); font-size: 14px; margin: 0; }
+  .err { color: var(--bad); background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 0; }
+
+  aside { flex: 1 1 300px; max-width: 380px; display: flex; flex-direction: column; gap: 16px; }
+  @media (max-width: 960px) { aside { max-width: none; } }
+  .box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .box h2 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+  .lhead, .lrow { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+  .lhead { font-size: 12px; color: var(--muted); padding: 0 6px 6px; border-bottom: 1px solid var(--line-soft); margin-bottom: 4px; }
+  .lrow { width: 100%; text-align: left; background: none; border: 0; border-radius: 6px; padding: 6px; font-size: 14px; min-height: 36px; }
+  .lrow:hover, .lrow.on { background: var(--accent-soft); }
+  .lrow .r { font-weight: 600; color: var(--muted); }
+  .lrow .s { color: var(--muted); }
+  .trust { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line-soft); margin-top: 6px; padding-top: 8px; }
+  .trust b { color: var(--ink); }
+  .off { background: var(--warn-bg); border-color: var(--warn-line); font-size: 14px; }
+  .off h2 { color: var(--warn-ink); }
+  .off .site { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 4px 0; font-size: 14px; }
+  .off .lone { display: inline; background: none; border: 0; padding: 0; font-size: 13px; color: var(--warn-text); text-decoration: underline; }
+  .off .site:hover b { text-decoration: underline; }
+  .off .s { color: var(--warn-text); font-size: 13px; }
+  .off.calm { background: var(--card); border-color: var(--line); }
+  .off.calm h2 { color: var(--ink); } .off.calm .s { color: var(--muted); }
+
+  footer { border-top: 1px solid var(--line); background: var(--card); }
+  footer .wrap { padding-top: 16px; padding-bottom: 16px; display: flex; flex-wrap: wrap; gap: 10px 40px; align-items: center; justify-content: space-between; font-size: 13px; color: var(--muted); }
+  footer .how { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  footer .how b { color: var(--ink); }
+  footer .facts { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  footer a { color: var(--link); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent)" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+      <b>ChargeDesk</b><span>· l'assistant de la tournée du soir</span>
+    </div>
+    <div class="day">
+      <button class="sq" id="prev" aria-label="Soir précédent">‹</button>
+      <button class="daybtn" id="daybtn" aria-expanded="false" aria-controls="panel">…</button>
+      <button class="sq" id="next" aria-label="Soir suivant">›</button>
+      <div class="panel" id="panel" hidden>
+        <label>Choisir un soir<input type="date" id="evening"></label>
+        <div class="k" id="readyk" hidden>Réponses instantanées, préparées à l'avance :</div>
+        <div class="chips" id="ready"></div>
+        <div class="cov" id="cov"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap main">
+  <main class="assistant">
+    <div>
+      <h1 id="title">…</h1>
+      <p class="lead">Demandez pourquoi une borne y figure, vérifiez un chiffre, ou repérez ce que la liste ne montre pas.</p>
+    </div>
+    <form id="form">
+      <label for="qbox" class="sr">Votre question</label>
+      <input id="qbox" maxlength="300" placeholder="Votre question sur la tournée de demain…">
+      <button id="go">Demander</button>
+    </form>
+    <p class="foot" style="margin:-8px 0 0">Les questions sont enregistrées, sans identifier qui les pose, pour suivre la qualité du service : n'y écrivez pas d'information personnelle.</p>
+    <div class="sugg" id="sugg"></div>
+    <div class="sugg" id="moresugg" hidden></div>
+    <div id="wait" aria-live="polite"></div>
+    <div id="result"></div>
+  </main>
+
+  <aside>
+    <section class="box">
+      <h2>Tournée de demain</h2>
+      <div class="lhead"><span></span><span>Borne · site</span><span>Risque demain</span></div>
+      <div id="rows"></div>
+      <div class="trust" id="trust"></div>
+    </section>
+    <section class="box off" id="off"></section>
+  </aside>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="how"><b>Comment ça marche</b>
+      <span>Votre question</span><span aria-hidden="true">→</span>
+      <span>l'agent choisit parmi 12 outils sur les données du soir</span><span aria-hidden="true">→</span>
+      <span>il répond avec ses sources, ou dit ce que les données ne permettent pas</span></div>
+    <div class="facts"><span id="evalsum"></span><span id="covfoot"></span>
+      <a id="ct" target="_blank" rel="noopener">↗ ChargeTriage, qui produit la liste</a>
+      <a id="code" target="_blank" rel="noopener">↗ Code et méthode</a></div>
+  </div>
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let META = null, DATA = null;
+const WAIT = ["Lecture de la question…", "Choix de l'outil…", "Consultation des données du soir…", "Vérification des chiffres…", "Rédaction de la réponse…"];
+const HINT = `<p class="hint">L'assistant répond avec les données du soir choisi, cite ses sources, et dit quand les données ne permettent pas de répondre.</p>`;
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fr = (x, d = 2) => Number(x).toLocaleString("fr-FR", {minimumFractionDigits: d, maximumFractionDigits: d});
+const pct = (x, d = 1) => x == null ? "—" : fr(x * 100, d) + " %";
+const dt = (iso, o) => new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", o);
+const fill = (t, v) => t.replace("{post_id}", v.post_id ?? "").replace("{site}", v.site ?? "");
+const DAY = 86400000;
+const oneIn = (r) => r ? Math.max(1, Math.round(1 / r)) : null;   // 0,24 -> "1 sur 4"
+const plural = (n, w) => `${n} ${w}${n > 1 ? "s" : ""}`;
+
+async function init() {
+  META = await (await fetch("/meta")).json();
+  const c = META.coverage, y0 = c.data_start.slice(0, 4), y1 = c.data_end.slice(0, 4);
+  $("cov").textContent = `Données ${y0}–${y1} · ${c.n_posts} bornes · ${c.n_sites} sites · ${c.place}. `
+    + `Listes du modèle du ${dt(META.first_evening, {day: "numeric", month: "long"})} au ${dt(META.last_evening, {day: "numeric", month: "long", year: "numeric"})}.`;
+  $("covfoot").textContent = `Données ${c.place}, ${y0}–${y1} · ${c.n_posts} bornes · ${c.n_sites} sites`;
+  $("evalsum").textContent = META.eval_summary || "";
+  $("ct").href = META.chargetriage_url; $("code").href = META.code_url;
+  $("moresugg").innerHTML = META.frequent.slice(1).map(q => `<button data-q="${esc(q.text)}">${esc(q.label)}</button>`).join("");
+
+  const ev = $("evening");
+  ev.min = META.first_evening; ev.max = META.last_evening;
+  const P = META.prepared_evenings || [];
+  ev.value = P.includes("2021-10-05") || !P.length ? "2021-10-05" : P[0];
+  if (P.length) {
+    $("readyk").hidden = false;
+    $("ready").innerHTML = P.map(d => `<button data-day="${d}">${esc(dt(d, {day: "numeric", month: "short"}))}</button>`).join("");
+  }
+  $("ready").onclick = (e) => { const b = e.target.closest("[data-day]"); if (b) { ev.value = b.dataset.day; closePanel(); load(); } };
+  ev.onchange = () => { if (ev.value >= META.first_evening && ev.value <= META.last_evening) { closePanel(); load(); } };
+  $("daybtn").onclick = () => { const p = $("panel"); p.hidden = !p.hidden; $("daybtn").setAttribute("aria-expanded", String(!p.hidden)); };
+  $("prev").onclick = () => shift(-1);
+  $("next").onclick = () => shift(1);
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".day")) closePanel();
+    const b = e.target.closest("[data-q]"); if (b) ask(b.dataset.q);
+    const m = e.target.closest("[data-more]");
+    if (m) { $("moresugg").hidden = !$("moresugg").hidden; m.textContent = $("moresugg").hidden ? "Plus de questions ▾" : "Moins de questions ▴"; }
+  });
+  $("form").onsubmit = (e) => { e.preventDefault(); ask($("qbox").value.trim()); };
+  load();
+}
+
+function closePanel() { $("panel").hidden = true; $("daybtn").setAttribute("aria-expanded", "false"); }
+
+function shift(n) {
+  const ev = $("evening"), d = new Date(Date.parse(ev.value) + n * DAY).toISOString().slice(0, 10);
+  if (d < META.first_evening || d > META.last_evening) return;
+  ev.value = d; load();
+}
+
+async function load() {
+  const ev = $("evening").value;
+  $("daybtn").textContent = "Soir du " + dt(ev, {weekday: "long", day: "numeric", month: "long", year: "numeric"}) + " ▾";
+  $("prev").disabled = ev <= META.first_evening; $("next").disabled = ev >= META.last_evening;
+  document.querySelectorAll("#ready [data-day]").forEach(b => b.classList.toggle("on", b.dataset.day === ev));
+  $("result").innerHTML = HINT;
+
+  DATA = await (await fetch("/evening/" + ev)).json();
+  const L = DATA.list, top = L[0], S = DATA.silent_sites;
+  $("title").textContent = L.length ? `La tournée de demain est prête : ${L.length} bornes à inspecter.` : "Pas de liste pour ce soir.";
+
+  // liste : le score du modele est calibre (0,36 = environ 36 % de risque d'episode le lendemain)
+  $("rows").innerHTML = L.map(r =>
+    `<button class="lrow" data-post="${r.post_id}" data-q="${esc(fill(META.post_questions[0].text, r))}"
+       title="Pourquoi la borne ${r.post_id} est-elle dans la liste ?">
+       <span class="r">${r.rank}</span><span><b>Borne ${r.post_id}</b> <span class="s">· ${esc(r.site)}</span></span>
+       <span class="num">${Math.round(r.score * 100)} %</span></button>`).join("");
+  const R = DATA.reliability, a = oneIn(R.champion), b = oneIn(R.fallback);
+  $("trust").innerHTML = a
+    ? `Ces dernières semaines, <b>1 borne listée sur ${a}</b> a vraiment eu un épisode le lendemain${b ? `, contre 1 sur ${b} en prenant simplement les bornes qui ont eu le plus de pannes` : ""}. Cliquer une borne pour savoir pourquoi elle y est.`
+    : "Cliquer une borne pour savoir pourquoi elle y est.";
+
+  // hors liste : sites dont des bornes sont muettes (aucune recharge depuis 7 jours) sans etre dans la liste
+  const big = S.filter(s => s.posts.length > 1), lone = S.filter(s => s.posts.length === 1);
+  const siteQ = (s) => esc(fill(META.site_questions[0].text, s));
+  $("off").classList.toggle("calm", !S.length);
+  $("off").innerHTML = `<h2>Hors liste</h2>` + (S.length
+    ? big.map(s => `<button class="site" data-q="${siteQ(s)}"><b>${esc(s.site)}</b> : ${s.posts.length} bornes muettes depuis ${s.max_days} j</button>`).join("")
+      + (lone.length ? `<div class="s">${big.length ? "et " : ""}${plural(lone.length, "borne")} muette${lone.length > 1 ? "s" : ""} isolée${lone.length > 1 ? "s" : ""} : `
+        + lone.map(s => `<button class="lone" data-q="${siteQ(s)}">${esc(s.site)}</button>`).join(", ") + `</div>` : "")
+    : `<div class="s">Toutes les bornes hors liste ont rechargé cette semaine.</div>`);
+
+  // questions suggerees : celles qui dependent du soir, puis les autres sur demande
+  const sugg = [];
+  if (top) sugg.push(`<button data-q="${esc(fill(META.post_questions[0].text, top))}">Pourquoi la borne ${top.post_id} est-elle en tête ?</button>`);
+  const worst = big[0] || S[0];
+  if (worst) sugg.push(`<button class="alert" data-q="${siteQ(worst)}">${esc(worst.site)} : ${plural(worst.posts.length, "borne")} muette${worst.posts.length > 1 ? "s" : ""} hors liste. Faut-il y aller ?</button>`);
+  sugg.push(`<button data-q="${esc(META.frequent[0].text)}">${esc(META.frequent[0].label)}</button>`);
+  sugg.push(`<button class="more" data-more="1">${$("moresugg").hidden ? "Plus de questions ▾" : "Moins de questions ▴"}</button>`);
+  $("sugg").innerHTML = sugg.join("");
+}
+
+async function ask(question) {
+  if (!question || question.length < 3) return;
+  $("qbox").value = question;
+  document.querySelectorAll(".lrow.on").forEach(r => r.classList.remove("on"));
+  const m = question.match(/borne (\d+)/i);
+  if (m) document.querySelector(`.lrow[data-post="${m[1]}"]`)?.classList.add("on");
+  $("go").disabled = true;
+  let i = 0; $("wait").textContent = WAIT[0];
+  const timer = setInterval(() => { i = Math.min(i + 1, WAIT.length - 1); $("wait").textContent = WAIT[i]; }, 2500);
+  $("result").innerHTML = "";
+  $("qbox").scrollIntoView({behavior: "smooth", block: "nearest"});
+  try {
+    const r = await fetch("/ask", {method: "POST", headers: {"Content-Type": "application/json"},
+                                   body: JSON.stringify({question, evening: $("evening").value})});
+    const data = await r.json();
+    if (!r.ok) throw new Error(typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail));
+    show(question, data);
+  } catch (e) {
+    $("result").innerHTML = `<p class="err">${esc(e.message)}</p>`;
+  } finally {
+    clearInterval(timer); $("wait").textContent = ""; $("go").disabled = false;
+  }
+}
+
+const STATUS = {answered: "Réponse", clarify: "Précision demandée", refuse: "Hors de portée des données"};
+const UNIT = {kwh: " kWh", days: " j"};
+const cap = (s) => { s = String(s ?? "").replace(/_/g, " "); return s.charAt(0).toUpperCase() + s.slice(1); };
+const fmt = f => f.unit === "rate" ? pct(f.value)
+               : f.unit === "score" ? fr(f.value)
+               : Number(f.value).toLocaleString("fr-FR") + (UNIT[f.unit] ?? "");
+
+// Quand l'assistant demande une precision : l'outil ne garde pas la conversation, donc on propose
+// la question reformulee en entier, avec le critere choisi.
+const PRECISIONS = [
+  {label: "Selon le risque estimé par le modèle", add: "selon le score de risque du modèle ce soir"},
+  {label: "Selon le nombre de pannes des 7 derniers jours", add: "selon le nombre de pannes matérielles sur les 7 derniers jours"},
+  {label: "Selon le taux de pannes", add: "selon le taux de pannes matérielles sur les 7 derniers jours"},
+  {label: "Bornes à l'arrêt", add: "parmi les bornes sans aucune recharge depuis au moins 7 jours"},
+];
+function precise(question) {
+  const base = question.replace(/\s*[?.!]+\s*$/, "");
+  return `<div class="sugg">` + PRECISIONS.map(p =>
+    `<button data-q="${esc(base + " (" + p.add + ") ?")}">${esc(p.label)}</button>`).join("") + `</div>
+    <div class="foot">L'assistant ne garde pas la conversation : choisissez un critère ci-dessus, ou reformulez votre question en entier.</div>`;
+}
+
+function show(question, d) {
+  const a = d.answer || {status: "clarify", text: "Pas de réponse lisible."};
+  // on masque les "chiffres" qui ne sont que des identifiants (numero de borne, rang)
+  const isId = f => /(borne|post)[\s_n°#-]*\d+/i.test(f.name) && Number(f.name.match(/\d+/)[0]) === Number(f.value)
+                  || /^(num[ée]ro|rang)\b/i.test(f.name);
+  const shown = (a.figures || []).filter(f => !isId(f));
+  const card = f => `<div class="fig"><div class="k">${esc(cap(f.name))}</div><div class="v num">${esc(fmt(f))}</div></div>`;
+  const figs = shown.length ? `<div class="figs">${shown.slice(0, 4).map(card).join("")}</div>` +
+    (shown.length > 4 ? `<details class="more"><summary>Voir les ${shown.length - 4} autres chiffres</summary><div class="figs">${shown.slice(4).map(card).join("")}</div></details>` : "") : "";
+  const per = a.period_start ? ` · ${dt(a.period_start, {day: "numeric", month: "short"})} → ${dt(a.period_end, {day: "numeric", month: "short", year: "numeric"})}` : "";
+  const src = (a.sources || []).length ? `Source : ${a.sources.map(esc).join(", ")}` : "Sans appel aux données";
+  const prep = d.prepared ? ` · réponse préparée à l'avance par l'agent${d.prepared_at ? " le " + esc(dt(d.prepared_at.slice(0, 10), {day: "numeric", month: "long", year: "numeric"})) : ""}` : "";
+  const tech = `<details><summary>Détails techniques</summary>
+    <div>Modèle : ${esc(d.model)}${d.fallback_used ? " (repli)" : ""} · ${d.llm_calls} appel(s) · ${d.prepared ? "réponse préparée, servie sans appel" : String(d.latency_s).replace(".", ",") + " s"}</div>
+    ${(d.notes || []).map(n => `<div>${esc(n)}</div>`).join("")}
+    ${d.steps.length ? `<div>Étapes :</div><ol>` + d.steps.map(s =>
+      `<li>${esc(s.tool)}${s.ok ? "" : " : erreur renvoyée au modèle, qui a corrigé"}</li>`).join("") + `</ol>` : ""}
+  </details>`;
+  $("result").innerHTML = `<article class="answer">
+    <div class="top"><span>« ${esc(question)} »</span><span class="st ${esc(a.status)}">${esc(STATUS[a.status] ?? a.status)}</span></div>
+    <div class="txt">${esc(a.text)}</div>${figs}
+    ${a.status === "clarify" ? precise(question) : ""}
+    <div class="foot ${d.prepared ? "prep" : ""}">${src}${per}${prep}</div>
+    ${tech}</article>`;
+}
+
+init();
+</script>
+</body>
+</html>

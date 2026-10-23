@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Copies brutes des sorties de ChargeTriage, chargees par chargedesk.data.load_raw. Les fichiers d'origine ne sont jamais modifies."
+    tables:
+      - name: daily_target
+        description: "Une ligne par borne et par jour : sessions, pannes materielles, energie, taux, niveau habituel, episode."
+      - name: features
+        description: "Une ligne par borne et par soir J : variables du modele ChargeTriage et resultat du lendemain (y)."
+      - name: replay_list
+        description: "Listes du rejeu (septembre a decembre 2021) : top 10 de chaque soir pour le champion et le modele de repli."
+      - name: silent_posts
+        description: "Alertes de bornes muettes (aucune recharge depuis plusieurs jours) levees pendant le rejeu."
+      - name: psi_by_month
+        description: "Derive des variables (PSI) par mois du rejeu, format large."
+      - name: load_log
+        description: "Registre des chargements : source, chemin, empreinte SHA-256, lignes, date."

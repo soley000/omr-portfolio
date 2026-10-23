@@ -15,6 +15,7 @@ Data & AI Engineer. Complex data turned into reliable solutions, from collection
 | [EV Charging Data Engineering](projects/data-engineering/ev-charging-data-engineering/) | Data engineering | Industrial |
 | [MobilityFlow: Bike-Sharing Station Availability Platform](projects/data-engineering/real-time-mobility-data-platform/) | Data engineering | Open source |
 | [ChargeTriage: Daily Inspection Priorities for EV Charging Stations](projects/ml-mlops/ev-charging-reliability/) | Machine learning, MLOps | Open source |
+| [ChargeDesk: an Evening Assistant for EV Charging Operators](projects/genai-llm/chargedesk/) | LLM agents, evaluation | Open source |
 | [Industrial Data Automation](projects/supporting/industrial-data-automation/) | Data quality | Industrial |
 | [CO₂ Reduction: EV Adoption in France](projects/supporting/co2-ev-france/) | Machine learning | Open source |
 | [Real Estate Price Prediction](projects/supporting/real-estate-price-prediction/) | Machine learning | Open source |

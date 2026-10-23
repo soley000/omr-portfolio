@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: stg_daily
+    description: "Activite et pannes materielles d'une borne pour un jour donne."
+    columns:
+      - name: post_id
+        description: "Numero de la borne (1 a 92)."
+        data_tests: [not_null]
+      - name: day
+        description: "Jour observe."
+        data_tests: [not_null]
+      - name: n_sessions
+        description: "Nombre de recharges du jour."
+      - name: n_hw_faults
+        description: "Nombre de pannes materielles de la borne (defauts du vehicule exclus)."
+      - name: hw_fault_rate
+        description: "Part des recharges du jour terminees par une panne materielle (vide si aucune recharge)."
+      - name: baseline_rate
+        description: "Niveau habituel de la borne : taux de pannes sur les 28 jours precedents, jour exclu."
+      - name: is_episode
+        description: "Episode anormal : au moins 2 pannes et un taux au moins double du niveau habituel. Vide si non observable."
+
+  - name: stg_features
+    description: "Variables du modele ChargeTriage pour une borne un soir J, et resultat du lendemain."
+    columns:
+      - name: post_id
+        data_tests: [not_null]
+      - name: evening
+        description: "Soir J ou la liste est calculee."
+        data_tests: [not_null]
+      - name: target_date
+        description: "Lendemain J+1, jour sur lequel porte la prediction."
+      - name: episode_next_day
+        description: "Episode le lendemain (resultat connu seulement apres J+1). A ne jamais montrer avant target_date."
+
+  - name: stg_replay_list
+    description: "Top 10 de chaque soir du rejeu, pour le modele champion et le modele de repli."
+    columns:
+      - name: evening
+        data_tests: [not_null]
+      - name: model
+        description: "Modele qui a produit la liste."
+        data_tests: [not_null]
+      - name: rank
+        description: "Rang dans la liste (1 = la plus a risque)."
+        data_tests: [not_null]
+      - name: score
+        description: "Risque estime d'un episode le lendemain (0 a 1)."
+      - name: episode_next_day
+        description: "Episode le lendemain (resultat connu seulement apres target_date)."
+
+  - name: stg_silent_posts
+    description: "Bornes muettes : alerte levee quand une borne n'a plus aucune recharge depuis plusieurs jours."
+    columns:
+      - name: post_id
+        data_tests: [not_null]
+      - name: alert_date
+        description: "Soir ou l'alerte a ete levee."
+      - name: last_session_date
+        description: "Jour de la derniere recharge de la borne."
+
+  - name: stg_psi
+    description: "Derive mensuelle de chaque variable (PSI) : moins de 0,10 stable, 0,10 a 0,25 a surveiller, plus de 0,25 derive."
+    columns:
+      - name: feature
+        data_tests: [not_null]
+      - name: month_start
+        data_tests: [not_null]
+      - name: psi
+        data_tests: [not_null]
+
+  - name: stg_load_log
+    description: "Registre des chargements, pour citer la provenance des donnees."

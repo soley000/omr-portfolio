@@ -1,0 +1,47 @@
+paths:
+  source_dir_env: EVREL_DATA_DIR
+  source_dir_default: C:/dev/ev-reliability-data
+  data_dir_env: CHARGEDESK_DATA_DIR
+  data_dir_default: C:/dev/chargedesk-data
+  warehouse: chargedesk.duckdb
+
+# Sorties de ChargeTriage, lues sans jamais etre modifiees
+sources:
+  daily_target: processed/daily_target.parquet
+  features: processed/features.parquet
+  replay_list: monitoring/replay_journal.parquet
+  silent_posts: monitoring/silent_posts.csv
+  psi_by_month: monitoring/psi_by_month.csv
+
+# Controle d'integrite : nombre de lignes attendu (14/10/2026)
+expected_rows:
+  daily_target: 66698
+  features: 56673
+  replay_list: 2440
+  silent_posts: 23
+  psi_by_month: 19
+# Bareme de correction (fixe le 15/10/2026, avant tout code d'agent)
+grading:
+  tolerances:
+    count: {abs: 0}
+    rate: {abs: 0.001}
+    score: {abs: 0.005}
+    kwh: {rel: 0.005}
+    days: {abs: 0}
+# Jeu d'evaluation (fige le 15/10/2026, avant tout code d'agent)
+evaluation:
+  splits:
+    dev: {start: 2021-09-01, end: 2021-10-31}
+    test: {start: 2021-11-01, end: 2021-12-30}
+  per_split:
+    fact: 6
+    comparison: 5
+    list: 5
+    alert: 4
+    reliability: 2
+    ambiguous: 3
+    causal: 2
+    future: 2
+    out_of_data: 1
+    modification: 1
+  frozen_questions_sha256: b3d82b793548479d5516ae01a71d9ea768f9d15d885bf05fbd42e7c730872829
