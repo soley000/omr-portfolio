@@ -1,6 +1,7 @@
-# Tests en CI : l'API, plus ce que les tests utilisent (entrepot fictif, client de test)
+# Tests en CI : l'API, plus ce que les tests utilisent (entrepot fictif, lecture Parquet, client de test)
 -r requirements-docker.txt
 pytest==9.1.1
 numpy==2.2.6
 pandas==2.3.3
+pyarrow==25.0.1
 httpx==0.28.1
