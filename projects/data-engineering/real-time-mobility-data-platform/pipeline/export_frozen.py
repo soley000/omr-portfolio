@@ -3,7 +3,7 @@ que l'appli lit, plus une table "export_meta" (chiffres de synthese). C'est ce f
 GitHub et lu par la demo en ligne. Lecture seule sur la vraie base.
 
 Usage (depuis la racine du projet) :
-    python export_frozen.py C:\\dev\\mobilityflow-data\\warehouse\\mobilityflow.duckdb
+    python pipeline\\export_frozen.py C:\\dev\\mobilityflow-data\\warehouse\\mobilityflow.duckdb
 """
 import sys
 from pathlib import Path

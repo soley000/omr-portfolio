@@ -13,6 +13,7 @@
 | **Key result** | 2.67 million station measurements collected from 9 to 25 October 2026 (121 stations listed), about 97 % of the expected snapshots received. A nightly five-task pipeline with 26 dbt tests (24 pass, 2 documented warnings) and 20 automated tests in CI. Source data issues are detected, documented and shown in the dashboard instead of hidden. |
 | **Stack** | Python · Parquet · Airflow · dbt · DuckDB · Docker · Streamlit |
 | **Context** | Open source |
+| **Demo** | [Live dashboard](https://mobilityflow-nantes.streamlit.app/) (frozen data from the final export, French interface) |
 
 ![MobilityFlow dashboard: map of stations coloured by verdict (interface in French)](../../../assets/images/mobilityflow_dashboard_map.png)
 
@@ -55,6 +56,8 @@ flowchart LR
     D --> E["dbt<br/>models + tests"]
     E --> F[("DuckDB<br/>warehouse")]
     F --> G["Streamlit<br/>dashboard"]
+    F --> H["Frozen export<br/>(1.8 MB)"]
+    H --> I["Public demo<br/>(Streamlit Cloud)"]
 ```
 
 Airflow runs the chain from the Parquet conversion to the published warehouse every night at 03:00 (Paris time), for the previous day. The dashboard only reads the published warehouse, in read-only mode.
@@ -212,6 +215,8 @@ python -m pip install -r app\requirements.txt
 python -m streamlit run app\streamlit_app.py
 ```
 
+Without a local warehouse, the dashboard reads the frozen export in `export/`, so step 3 alone is enough to open it.
+
 Raw file names use UTC time. Days are cut on Paris time.
 
 <details>
@@ -228,7 +233,6 @@ real-time-mobility-data-platform/
 ├── app/                  # Streamlit dashboard
 ├── export/               # frozen export read by the public demo
 ├── exploration/          # data exploration scripts
-├── docs/                 # notes and decisions
 ├── .streamlit/           # dashboard theme
 ├── docker-compose.yml
 ├── Dockerfile

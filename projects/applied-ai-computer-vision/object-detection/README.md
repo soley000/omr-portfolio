@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Object Detection : YOLOv8, DETR & OWL-ViT
+# Object Detection: YOLOv8, DETR & OWL-ViT
 
 > Computer vision model comparison and interactive inference.
 

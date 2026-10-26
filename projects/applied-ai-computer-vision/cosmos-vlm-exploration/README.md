@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Vision Models Evaluation : Cosmos Reason1 & Reason2
+# Vision-Language Models Exploration: Cosmos Reason1 & Reason2
 
 > Exploratory evaluation of vision-language models for autonomous driving scene analysis.
 
