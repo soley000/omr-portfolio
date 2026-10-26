@@ -10,7 +10,7 @@ test-paths: ["tests"]
 vars:
   # Seuil EXPLORATOIRE pour dire qu'une station "paraît figée". À recalibrer après ~1 semaine
   # d'historique (une station calme la nuit n'est pas forcément en panne).
-  frozen_threshold_hours: 6
+  frozen_threshold_hours: 24
   # Un trou de plus de N minutes entre deux relevés coupe une période "sans changement".
   max_gap_minutes: 5
 

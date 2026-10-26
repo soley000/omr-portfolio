@@ -19,11 +19,21 @@ def warehouse_path() -> Path:
     if explicit:
         return Path(explicit)
     data_dir = os.environ.get("MOBILITYFLOW_DATA_DIR", "C:/dev/mobilityflow-data")
-    return Path(data_dir) / "warehouse" / "mobilityflow.duckdb"
+    local = Path(data_dir) / "warehouse" / "mobilityflow.duckdb"
+    if local.exists():
+        return local
+    # Pas de base locale (cas de l'hebergeur) : export fige publie avec le projet.
+    return Path(__file__).resolve().parent.parent / "export" / "mobilityflow_frozen.duckdb"
 
 
 def _read(con: duckdb.DuckDBPyConnection, sql: str) -> pd.DataFrame:
     return con.execute(sql).df()
+
+
+def _read_meta(con: duckdb.DuckDBPyConnection, sql: str) -> pd.DataFrame:
+    """Chiffres de synthese : table export_meta dans l'export fige, sinon calcul sur la vraie base."""
+    has_export = con.execute("select count(*) from information_schema.tables where table_name = 'export_meta'").fetchone()[0]
+    return _read(con, "select * from export_meta") if has_export else _read(con, sql)
 
 
 def load_warehouse(path: str) -> dict[str, pd.DataFrame]:
@@ -51,7 +61,7 @@ def load_warehouse(path: str) -> dict[str, pd.DataFrame]:
             "unchanged": _read(con, """
                 select station_id, longest_unchanged_minutes, current_unchanged_minutes, looks_frozen_now
                 from fct_station_unchanged"""),
-            "meta": _read(con, """
+            "meta": _read_meta(con, """
                 select count(*)                                                    as snapshots_rows,
                        count(distinct station_id)                                  as stations,
                        count(distinct date_paris)                                  as days,

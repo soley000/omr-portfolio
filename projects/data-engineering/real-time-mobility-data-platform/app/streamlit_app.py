@@ -29,6 +29,7 @@ INK, MUTED, LINE, ACCENT = "#12333A", "#4B6A70", "#DCE6E4", "#0F8B8D"
 FREQUENT = 0.20            # « manque régulièrement » = au moins 20 % du temps (1 mesure sur 5)
 MIN_MEASURES = 100         # en dessous (≈ 1 h 40), pas assez de mesures pour juger une station sur la journée
 MIN_MEASURES_HOUR = 10     # idem pour une heure précise
+FROZEN_HOURS = 24         # doit rester egal a frozen_threshold_hours de dbt/dbt_project.yml
 VERDICT_COLOR = {"Bien équilibrée": GOOD, "Manque de vélos": NO_BIKE, "Manque de places": NO_DOCK,
                  "Les deux": BOTH, "Pas assez de mesures": GREY}
 BIKE_SVG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" '
@@ -120,7 +121,8 @@ with st.sidebar:
                     f'margin-right:8px;vertical-align:middle"></span>{txt}', unsafe_allow_html=True)
     st.caption("« Manque » veut dire : pas de vélo (ou pas de place) pendant au moins un cinquième du temps. "
                "Les définitions sont dans l'onglet « À propos ».")
-    st.caption("Données : Bicloo, JCDecaux / Nantes Métropole (Licence Ouverte).")
+    st.caption(f"Données : Bicloo, JCDecaux / Nantes Métropole (Licence Ouverte). Dernière mise à jour : {last_date:%d/%m/%Y}.")
+    st.caption("Projet indépendant, non approuvé par Nantes Métropole ni par JCDecaux.")
 
 p_start, p_end = (period[0], period[-1]) if isinstance(period, (tuple, list)) and len(period) else (first_date, last_date)
 sel = hours[(hours["date_paris"] >= p_start) & (hours["date_paris"] <= p_end)].copy()
@@ -208,7 +210,7 @@ def reception_rate() -> tuple[float, int]:
 
 # ---------------------------------------------------------------- en-tête + onglets
 st.title("Comment respire le réseau Bicloo ?")
-tab_syn, tab_qo, tab_fia, tab_apr = st.tabs(["Synthèse", "Quand et où", "Fiabilité des données", "À propos"])
+tab_qo, tab_syn, tab_fia, tab_apr = st.tabs(["Quand et où", "Synthèse", "Fiabilité des données", "À propos"])
 
 # ================================================================ SYNTHÈSE
 with tab_syn:
@@ -267,7 +269,7 @@ with tab_syn:
                          f"{dq.fmt_minutes(r['current_unchanged_minutes'])} sans changement.</span>")
             head_m = "Aucune station à contrôler"
         b.markdown(f'<div class="mf-card"><div class="t"><span class="d" style="background:{NO_DOCK}"></span>Quoi faire contrôler ?</div>'
-                   f'<div class="s">{head_m} (nombre de vélos inchangé depuis plus de 6 h)</div><div class="b">{body}</div>'
+                   f'<div class="s">{head_m} (nombre de vélos inchangé depuis plus de {FROZEN_HOURS} h)</div><div class="b">{body}</div>'
                    f'<div class="f">Pour l\'équipe de maintenance. Une alerte, pas une preuve de panne.</div></div>', unsafe_allow_html=True)
 
         rate_txt = dq.fmt_pct(rate) if pd.notna(rate) else "n/d"
@@ -349,7 +351,8 @@ with tab_qo:
             f = go.Figure(go.Bar(x=top10[key], y=top10["name"], orientation="h", marker_color=colr,
                                  text=[dq.fmt_pct(v) for v in top10[key]], textposition="outside"))
             f.update_layout(xaxis_tickformat=".0%", xaxis_range=[0, max(0.1, float(top10[key].max() or 0) * 1.25)],
-                            title=dict(text=title, font=dict(size=15)))
+                            showlegend=False)
+            col.markdown(f"**{title}**")
             col.plotly_chart(style_fig(f, 360), width="stretch")
             col.caption(sub + ".")
 
@@ -368,10 +371,12 @@ with tab_qo:
         st.plotly_chart(style_fig(fig, 60 + 26 * len(picks)), width="stretch")
 
         st.subheader("Zoom sur une station")
-        pick = st.selectbox("Choisis une station", options=stations.sort_values("name")["station_id"], format_func=lambda s: name_of.get(s, s))
+        _with_data = set(sel.loc[sel["snapshots_in_service"].fillna(0) > 0, "station_id"])
+        _choices = stations[stations["station_id"].isin(_with_data)].sort_values("name")["station_id"]
+        pick = st.selectbox("Choisis une station", options=_choices, format_func=lambda s: name_of.get(s, s))
         one = sel[sel["station_id"] == pick]
-        if one.empty:
-            st.info("Pas de mesures pour cette station sur la sélection.")
+        if one.empty or one["snapshots_in_service"].fillna(0).sum() == 0:
+            st.info("Aucune mesure en service pour cette station sur la sélection.")
         else:
             rates = dq.weighted_rates(one.assign(g=1), ["g"]).iloc[0]
             v = verdict(rates["pct_empty"], rates["pct_full"], rates["snapshots_in_service"], MIN_MEASURES_HOUR)
@@ -409,13 +414,16 @@ with tab_fia:
            "de bornes faux déforment les résultats.")
 
     published = datetime.fromtimestamp(wh.stat().st_mtime)
-    k1, k2, k3, k4 = st.columns(4)
+    _full = collection[~collection["is_partial_hour"]]
+    n_missing, n_expected = int(_full["missing_snapshots"].sum()), int(_full["expected_snapshots"].sum())
+    k1, k2, k3, k4, k5 = st.columns(5)
     kpi(k1, "Jours de mesures", f"{n_days}", "Nombre de jours déjà enregistrés.")
     kpi(k2, "Mesures enregistrées", f"{int(meta['snapshots_rows']):,}".replace(",", " "), "Une mesure = l'état d'une station à une minute donnée.")
     kpi(k3, "Dernière mesure", last_snap.strftime("%d/%m %H:%M"), "Moment de la dernière mesure prise.", size=26)
-    kpi(k4, "Base mise à jour le", published.strftime("%d/%m %H:%M"), "Le traitement de nuit (3 h) met la base à jour.", size=26)
-    st.caption("Chaque nuit, avant de mettre la base à jour, des vérifications automatiques sont lancées. Si l'une échoue, "
-               "rien n'est publié : ce que tu vois ici a donc passé les vérifications.")
+    kpi(k4, "Période des mesures", f"{first_date:%d/%m} au {last_date:%d/%m}", "Données figées : aucune mesure après cette date.", size=26)
+    kpi(k5, "Mesures manquantes", f"{n_missing:,}".replace(",", " "), f"Sur {n_expected:,} attendues (hors première et dernière heure).".replace(",", " "), "#C25E15")
+    st.caption("Avant la mise en ligne, des vérifications automatiques ont été lancées sur ces données : 24 réussies, 2 avertissements expliqués plus bas. "
+               "Aucune n'a échoué.")
 
     st.subheader("Les mesures sont-elles toutes arrivées ?")
     st.caption("Une mesure est prise chaque minute, donc 60 par heure. Vert : toutes reçues. Orange : il en manque. "
@@ -463,13 +471,13 @@ with tab_fia:
         st.subheader("Stations dont le nombre de vélos ne change plus")
         u = unchanged.assign(Station=unchanged["station_id"].map(name_of)).sort_values("longest_unchanged_minutes", ascending=False).head(10)
         u = u.assign(**{"Plus longue période sans changement": u["longest_unchanged_minutes"].map(dq.fmt_minutes),
-                        "En ce moment": u["current_unchanged_minutes"].map(dq.fmt_minutes),
-                        "À faire contrôler ?": u["looks_frozen_now"].map({True: "Oui", False: "Non"})})
-        st.dataframe(u[["Station", "Plus longue période sans changement", "En ce moment", "À faire contrôler ?"]],
+                        "À la dernière mesure": u["current_unchanged_minutes"].map(lambda m: "Hors service" if pd.isna(m) else dq.fmt_minutes(m)),
+                        f"A dépassé {FROZEN_HOURS} h ?": (u["longest_unchanged_minutes"] >= FROZEN_HOURS * 60).map({True: "Oui", False: "Non"})})
+        st.dataframe(u[["Station", "Plus longue période sans changement", f"A dépassé {FROZEN_HOURS} h ?", "À la dernière mesure"]],
                      hide_index=True, width="stretch")
-        st.caption("Une station est signalée si son nombre de vélos et de places n'a pas bougé depuis plus de 6 heures. "
+        st.caption("Une station est signalée si son nombre de vélos et de places n'a pas bougé depuis plus de 24 heures. "
                    "C'est une alerte, pas une preuve de panne : une station peu utilisée peut rester immobile. "
-                   "Ce délai sera ajusté quand on aura plus de jours de mesures.")
+                   "Seuil relevé de 6 h à 24 h après test : à 6 h, 90 stations sur 102 étaient signalées, à cause des nuits calmes.")
 
 # ================================================================ À PROPOS
 with tab_apr:
@@ -510,16 +518,17 @@ digraph G {
 - **Les deux** : la station manque de vélos *et* de places à des moments différents.
 - **Bien équilibrée** : ni l'un ni l'autre. On y trouve en général un vélo et une place.
 - **Bornes occupées** : part des bornes qui ont un vélo.
-- **Station à contrôler** : son nombre de vélos n'a pas bougé depuis plus de 6 heures. À vérifier, sans certitude de panne.
+- **Station à contrôler** : son nombre de vélos n'a pas bougé depuis plus de 24 heures. À vérifier, sans certitude de panne.
 """)
     st.subheader("Limites à connaître")
     st.markdown("""
-- Pour l'instant, **peu de jours de mesures** : les classements sont indicatifs et se préciseront avec le temps.
+- **17 jours de mesures** (du 9 au 25 octobre 2026), avec environ 97 % des mesures attendues reçues : les classements sont indicatifs.
+- Le réseau a changé pendant la période : le déploiement des vélos VOI à Nantes a commencé le 19 octobre 2026, et le nombre de stations en service par minute est passé de 102 à environ 68. Le lien entre les deux est une hypothèse, pas une certitude.
 - L'heure de dernier signalement fournie par le service est peu fiable : elle n'est pas utilisée.
 - Quelques stations ont un nombre de bornes annoncé inexact (voir « Fiabilité des données »).
-- La règle « un cinquième du temps » est un choix de lisibilité ; elle sera réexaminée avec plus de données.
-- Les données vont jusqu'à la veille : ce n'est pas un outil en temps réel.
-- Le traitement de nuit tourne en mode apprentissage sur un seul ordinateur, pas en production.
+- La règle « un cinquième du temps » est un choix de lisibilité ; elle a été testée de 10 % à 40 %, et à 20 % une vingtaine de stations sont signalées, sur les 17 jours comme sur les 10 premiers.
+- Les données sont **figées** : elles s'arrêtent au 25 octobre 2026. Ce n'est pas un outil en temps réel.
+- Le traitement de nuit a tourné en local, sur un seul ordinateur, pas en production.
 """)
     with st.expander("Sous le capot (pour les curieux)"):
         st.markdown("""
@@ -527,5 +536,7 @@ Python (collecte et conversion) · Parquet (fichiers compacts) · Airflow (plani
 dbt (nettoyage et vérifications en SQL) · DuckDB (base de données) · Streamlit (cette page, en lecture seule).
 
 **Données** : Bicloo, JCDecaux / Nantes Métropole, Licence Ouverte. Projet d'apprentissage en ingénierie de la donnée :
-local, sans cloud, figé après quelques semaines de collecte.
+traitement local, sans cloud ; données figées au 25 octobre 2026 (dernière mise à jour).
+
+Ce projet est indépendant : il n'est ni officiel, ni approuvé, ni soutenu par Nantes Métropole ou JCDecaux.
 """)

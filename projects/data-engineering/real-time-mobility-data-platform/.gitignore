@@ -42,3 +42,8 @@ airflow.db
 .idea/
 .DS_Store
 Thumbs.db
+
+# ---- Scripts de construction et sauvegardes locales ----
+make_*.ps1
+docs/sauvegarde_*
+docs/README_avant_*
